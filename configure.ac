@@ -149,6 +149,7 @@ HAS_EXCEPTIONS=
 dnl ########################################################################
 dnl extract the PTLib version
 dnl MSWIN_DISPLAY version,Version
+dnl MSWIN_DEFAULT version,Enabled
 dnl MSWIN_VERSION version,PTLIB_MAJOR=MAJOR_VERSION
 dnl MSWIN_VERSION version,PTLIB_MINOR=MINOR_VERSION
 dnl MSWIN_VERSION version,PTLIB_BUILD=BUILD_NUMBER
@@ -181,6 +182,8 @@ dnl ########################################################################
 dnl Normalise target_os and target_cpu
 
 dnl MSWIN_DISPLAY winver,Advanced Windows API
+
+dnl MSWIN_DEFAULT winver,Enabled
 dnl MSWIN_DEFINE  winver,WINVER=0x502
 
 m4_include(make/canonical.m4)
@@ -352,6 +355,8 @@ dnl ########################################################################
 dnl check the endianness
 
 dnl MSWIN_DISPLAY byteorder,Byte Order
+
+dnl MSWIN_DEFAULT byteorder,Enabled
 dnl MSWIN_DEFINE  byteorder,PBYTE_ORDER=PLITTLE_ENDIAN
 
 AC_C_BIGENDIAN()
@@ -539,6 +544,7 @@ dnl ########################################################################
 dnl check for Windows-like integer BOOL
 dnl
 dnl MSWIN_DISPLAY ansi-bool,ANSI C++ bool
+dnl MSWIN_DEFAULT ansi-bool,Disabled
 dnl MSWIN_DEFINE  ansi-bool,P_USE_STANDARD_CXX_BOOL
 
 AC_ARG_ENABLE(ansi-bool, AS_HELP_STRING([--disable-ansi-bool],[Use Windows-like integer BOOL over ANSI C++ bool]))
@@ -764,6 +770,8 @@ dnl ########################################################################
 dnl check for pthreads library
 
 dnl MSWIN_DISPLAY semaphore,Semaphore Support
+
+dnl MSWIN_DEFAULT semaphore,Enabled
 dnl MSWIN_DEFINE  semaphore,P_HAS_SEMAPHORES
 
 dnl Linux, Mac OS X use libpthread and -lpthread
@@ -879,9 +887,13 @@ dnl ########################################################################
 dnl check for wchar and friends
 
 dnl MSWIN_DISPLAY wchar,wchar Support
+
+dnl MSWIN_DEFAULT wchar,Enabled
 dnl MSWIN_DEFINE  wchar,P_HAS_WCHAR
 
 dnl MSWIN_DISPLAY wstream,wchar stream Support
+
+dnl MSWIN_DEFAULT wstream,Enabled
 dnl MSWIN_DEFINE  wstream,P_HAS_WOSTREAM
 
 AC_CHECK_HEADERS(
@@ -928,6 +940,8 @@ dnl ########################################################################
 dnl check for dynamic library code (dlopen and friends)
 
 dnl MSWIN_DISPLAY dll,DLL Support
+
+dnl MSWIN_DEFAULT dll,Enabled
 dnl MSWIN_DEFINE  dll,P_DYNALINK
 
 
@@ -942,6 +956,8 @@ dnl on some systems, the resolver is in libc
 dnl but needs resolv.h included which defines res_search as __res_search
 
 dnl MSWIN_DISPLAY    resolver,DNS Resolver
+
+dnl MSWIN_DEFAULT resolver,Disabled
 dnl MSWIN_CHECK_FILE resolver,include\windns.h,P_DNS_RESOLVER=1
 dnl MSWIN_CHECK_FILE resolver,include\um\windns.h,P_DNS_RESOLVER=1
 dnl MSWIN_CHECK_DIR  resolver,%ProgramFiles%\Windows Kits\8.0
@@ -976,6 +992,8 @@ dnl ########################################################################
 dnl Look for SASL
 
 dnl MSWIN_DISPLAY    sasl,Cyrus SASL
+
+dnl MSWIN_DEFAULT sasl,Disabled
 dnl MSWIN_CHECK_FILE sasl,include\sasl.h,P_SASL_WIN32=1
 dnl MSWIN_DIR_SYMBOL sasl,SASL_DIR
 dnl MSWIN_CHECK_DIR  sasl,..\sasl\
@@ -1052,6 +1070,8 @@ dnl ########################################################################
 dnl look for OpenLDAP (requires SASL)
 
 dnl MSWIN_DISPLAY    openldap,Open LDAP
+
+dnl MSWIN_DEFAULT openldap,Disabled
 dnl MSWIN_IF_FEATURE openldap,sasl
 dnl MSWIN_CHECK_FILE openldap,include\ldap.h|OpenLDAP,P_LDAP_WIN32=1
 dnl MSWIN_DIR_SYMBOL openldap,LDAP_DIR
@@ -1095,6 +1115,8 @@ dnl contains a AC_CHECK_HEADER directive that never gets used. So we have
 dnl to ensure that it is always called
 
 dnl MSWIN_DISPLAY    openssl,Open SSL (32 bit)
+
+dnl MSWIN_DEFAULT openssl,Disabled
 dnl MSWIN_CHECK_FILE openssl,inc32\openssl\ssl.h,P_SSL_WIN32=1
 dnl MSWIN_CHECK_FILE openssl,include\openssl\ssl.h,P_SSL_WIN32=2
 dnl MSWIN_FIND_FILE  openssl,P_SSL_AES,aes.h,...
@@ -1111,6 +1133,8 @@ dnl MSWIN_CHECK_DIR  openssl,\openssl\
 dnl MSWIN_CHECK_DIR  openssl,\OpenSSL-Win32
 
 dnl MSWIN_DISPLAY    openssl64,Open SSL (64 bit)
+
+dnl MSWIN_DEFAULT openssl64,Disabled
 dnl MSWIN_CHECK_FILE openssl64,include\openssl\ssl.h,P_SSL_WIN64=1
 dnl MSWIN_DIR_SYMBOL openssl64,SSL_WIN64_DIR
 dnl MSWIN_CHECK_DIR  openssl64,%ProgramFiles%\OpenSSL-Win64\
@@ -1179,6 +1203,8 @@ dnl ########################################################################
 dnl look for expat XML parser
 
 dnl MSWIN_DISPLAY    expat,Expat XML (local build)
+
+dnl MSWIN_DEFAULT expat,Disabled
 dnl MSWIN_CHECK_FILE expat,lib\expat.h,P_EXPAT_BUILD=1
 dnl MSWIN_DIR_SYMBOL expat,EXPAT_BUILD_DIR
 dnl MSWIN_FIND_FILE  expat,P_EXPAT_LIBRARY_W32_DEBUG,expat.lib,Debug
@@ -1202,6 +1228,8 @@ dnl MSWIN_CHECK_DIR  expat,c:\expat\
 dnl MSWIN_CHECK_DIR  expat,\libs\expat\
 
 dnl MSWIN_DISPLAY    expat32,Expat XML (precompiled)
+
+dnl MSWIN_DEFAULT expat32,Disabled
 dnl MSWIN_CHECK_FILE expat32,Source\lib\expat.h,P_EXPAT_WIN32=1
 dnl MSWIN_DIR_SYMBOL expat32,EXPAT_WIN32_DIR
 dnl MSWIN_FIND_FILE  expat32,P_EXPAT_LIBRARY,libexpatMT.lib,bin
@@ -1234,6 +1262,7 @@ PTLIB_NEW_OPTION(EXPAT)
 dnl ########################################################################
 dnl look for Lua library
 dnl MSWIN_DISPLAY    lua,Lua interpreter
+dnl MSWIN_DEFAULT lua,Disabled
 dnl MSWIN_CHECK_FILE lua,include\lua.h,P_LUA_WIN32=1
 dnl MSWIN_DIR_SYMBOL lua,LUA_DIR
 dnl MSWIN_CHECK_DIR  lua,%ProgramFiles%\Lua\5.1
@@ -1276,6 +1305,7 @@ PTLIB_NEW_OPTION(LUA)
 dnl ########################################################################
 dnl look for V8 library
 dnl MSWIN_DISPLAY    v8,V8 Javascript interpreter
+dnl MSWIN_DEFAULT v8,Disabled
 dnl MSWIN_CHECK_FILE v8,include\v8.h,P_V8_WIN32=1
 dnl MSWIN_DIR_SYMBOL v8,V8_DIR
 dnl MSWIN_CHECK_DIR  v8,..\external\v8
@@ -1318,6 +1348,8 @@ dnl ########################################################################
 dnl look for IPV6 functions
 
 dnl MSWIN_DISPLAY    ipv6,IPv6 Support
+
+dnl MSWIN_DEFAULT ipv6,Disabled
 dnl MSWIN_CHECK_FILE ipv6,include\ws2tcpip.h,P_HAS_IPV6=1
 dnl MSWIN_CHECK_FILE ipv6,include\um\ws2tcpip.h,P_HAS_IPV6=1
 dnl MSWIN_CHECK_DIR  ipv6,%ProgramFiles%\Windows Kits\8.0
@@ -1374,6 +1406,8 @@ dnl ########################################################################
 dnl look for pcap functions
 
 dnl MSWIN_DISPLAY    pcap,WinPCAP Support
+
+dnl MSWIN_DEFAULT pcap,Disabled
 dnl MSWIN_CHECK_FILE pcap,include\pcap\pcap.h,P_PCAP_WIN32=1
 dnl MSWIN_CHECK_FILE pcap,lib\x64\wpcap.lib,P_PCAP_WIN64=1
 dnl MSWIN_DIR_SYMBOL pcap,PCAP_DIR
@@ -1412,6 +1446,7 @@ PTLIB_NEW_OPTION(PCAP)
 dnl ########################################################################
 dnl check for enabling config file support
 dnl MSWIN_DISPLAY    configfile,Config file protocol support
+dnl MSWIN_DEFAULT configfile,Enabled
 dnl MSWIN_DEFINE     configfile,P_CONFIG_FILE
 
 PTLIB_SIMPLE_OPTION([configfile], [CONFIG_FILE], [enable config file support])
@@ -1420,6 +1455,7 @@ PTLIB_NEW_OPTION(CONFIG_FILE)
 dnl ########################################################################
 dnl check for URL support
 dnl MSWIN_DISPLAY    url,URL Support
+dnl MSWIN_DEFAULT url,Enabled
 dnl MSWIN_DEFINE     url,P_URL
 
 PTLIB_SIMPLE_OPTION([url], [URL], [enable URL support])
@@ -1428,6 +1464,7 @@ PTLIB_NEW_OPTION(URL)
 dnl ########################################################################
 dnl check for HTTP support
 dnl MSWIN_DISPLAY    http,HTTP Support
+dnl MSWIN_DEFAULT http,Enabled
 dnl MSWIN_DEFINE     http,P_HTTP
 dnl MSWIN_IF_FEATURE http,url
 
@@ -1437,6 +1474,7 @@ PTLIB_NEW_OPTION(HTTP)
 dnl ########################################################################
 dnl check for HTTPFORMS support
 dnl MSWIN_DISPLAY    httpforms,HTTP forms Support
+dnl MSWIN_DEFAULT httpforms,Disabled
 dnl MSWIN_DEFINE     httpforms,P_HTTPFORMS
 dnl MSWIN_IF_FEATURE httpforms,http&configfile
 
@@ -1447,6 +1485,7 @@ PTLIB_NEW_OPTION(HTTPFORMS)
 dnl ########################################################################
 dnl check for HTTPSVC support
 dnl MSWIN_DISPLAY    httpsvc,HTTP service Support
+dnl MSWIN_DEFAULT httpsvc,Disabled
 dnl MSWIN_DEFINE     httpsvc,P_HTTPSVC
 dnl MSWIN_IF_FEATURE httpsvc,httpforms
 
@@ -1456,6 +1495,7 @@ PTLIB_NEW_OPTION(HTTPSVC)
 dnl ########################################################################
 dnl check for SSDP support
 dnl MSWIN_DISPLAY    ssdp,SSDP support
+dnl MSWIN_DEFAULT ssdp,Disabled
 dnl MSWIN_DEFINE     ssdp,P_SSDP
 dnl MSWIN_IF_FEATURE ssdp,http
 
@@ -1464,6 +1504,7 @@ PTLIB_SIMPLE_OPTION([ssdp], [SSDP], [enable SSDP support], [HAS_HTTP])
 dnl ########################################################################
 dnl check for VCard support
 dnl MSWIN_DISPLAY    vcard,VCard support
+dnl MSWIN_DEFAULT vcard,Disabled
 dnl MSWIN_DEFINE     vcard,P_VCARD
 
 PTLIB_SIMPLE_OPTION([vcard], [VCARD], [enable VCard support], [HAS_URL])
@@ -1471,6 +1512,7 @@ PTLIB_SIMPLE_OPTION([vcard], [VCARD], [enable VCard support], [HAS_URL])
 dnl ########################################################################
 dnl Jabber
 dnl MSWIN_DISPLAY    jabber,Jabber
+dnl MSWIN_DEFAULT jabber,Disabled
 dnl MSWIN_DEFINE     jabber,P_JABBER
 dnl MSWIN_IF_FEATURE jabber,expat
 dnl MSWIN_IF_FEATURE jabber,expat32
@@ -1481,6 +1523,7 @@ PTLIB_NEW_OPTION(JABBER)
 dnl ########################################################################
 dnl Speech
 dnl MSWIN_DISPLAY    sapi,Speech API
+dnl MSWIN_DEFAULT sapi,Disabled
 dnl MSWIN_CHECK_FILE sapi,include\sphelper.h,P_SAPI=1
 dnl MSWIN_CHECK_FILE sapi,include\um\sphelper.h,P_SAPI=1
 dnl MSWIN_DEFINE     sapi,P_TTS
@@ -1493,6 +1536,7 @@ PTLIB_NEW_OPTION(TTS)
 dnl ########################################################################
 dnl VXML 
 dnl MSWIN_DISPLAY    vxml,VXML Support
+dnl MSWIN_DEFAULT vxml,Disabled
 dnl MSWIN_DEFINE     vxml,P_VXML
 dnl MSWIN_IF_FEATURE vxml,http&sapi&expat
 dnl MSWIN_IF_FEATURE vxml,http&sapi&expat32
@@ -1503,6 +1547,7 @@ PTLIB_NEW_OPTION(VXML)
 dnl ########################################################################
 dnl XMLRPC
 dnl MSWIN_DISPLAY    xmlrpc,XMLRPC Support
+dnl MSWIN_DEFAULT xmlrpc,Disabled
 dnl MSWIN_DEFINE     xmlrpc,P_XMLRPC
 dnl MSWIN_IF_FEATURE xmlrpc,http&expat
 dnl MSWIN_IF_FEATURE xmlrpc,http&expat32
@@ -1513,6 +1558,7 @@ PTLIB_NEW_OPTION(XMLRPC)
 dnl ########################################################################
 dnl SOAP
 dnl MSWIN_DISPLAY    soap,SOAP Support
+dnl MSWIN_DEFAULT soap,Disabled
 dnl MSWIN_DEFINE     soap,P_SOAP
 dnl MSWIN_IF_FEATURE soap,http&expat
 dnl MSWIN_IF_FEATURE soap,http&expat32
@@ -1522,11 +1568,13 @@ PTLIB_NEW_OPTION(SOAP)
 
 dnl ########################################################################
 dnl MSWIN_DISPLAY       atl,Active Template Library
+dnl MSWIN_DEFAULT atl,Enabled
 dnl MSWIN_CHECK_FILE    atl,atlbase.h,P_ATL=1
 
 dnl ########################################################################
 dnl check for enabling ASN support
 dnl MSWIN_DISPLAY    asn,ASN Support
+dnl MSWIN_DEFAULT asn,Enabled
 dnl MSWIN_DEFINE     asn,P_ASN
 
 PTLIB_SIMPLE_OPTION([asn], [ASN], [enable ASN decoding/encoding support])
@@ -1535,8 +1583,10 @@ PTLIB_NEW_OPTION(ASN)
 dnl ########################################################################
 dnl check for enabling NAT support
 dnl MSWIN_DISPLAY    nat,NAT Support
+dnl MSWIN_DEFAULT nat,Enabled
 dnl MSWIN_DEFINE     nat,P_NAT
 dnl MSWIN_DISPLAY    nat,NAT traversal support
+dnl MSWIN_DEFAULT nat,Enabled
  
 PTLIB_SIMPLE_OPTION([nat],     [NAT],     [enable NAT traversal support])
 PTLIB_NEW_OPTION(NAT)
@@ -1544,8 +1594,10 @@ PTLIB_NEW_OPTION(NAT)
 dnl ########################################################################
 dnl check for enabling STUN support
 dnl MSWIN_DISPLAY    stun,STUN Support
+dnl MSWIN_DEFAULT stun,Enabled
 dnl MSWIN_DEFINE     stun,P_STUN
 dnl MSWIN_DISPLAY    stunsrv,STUN server support
+dnl MSWIN_DEFAULT stunsrv,Disabled
 dnl MSWIN_DEFINE     stunsrv,P_STUNSRVR
  
 PTLIB_SIMPLE_OPTION([stun],     [STUN],     [enable STUN support],        [HAS_NAT])
@@ -1556,6 +1608,7 @@ PTLIB_NEW_OPTION(STUNSRVR)
 dnl ########################################################################
 dnl check for enabling PIPECHAN support
 dnl MSWIN_DISPLAY    pipechan,pipe channel Support
+dnl MSWIN_DEFAULT pipechan,Disabled
 dnl MSWIN_DEFINE     pipechan,P_PIPECHAN
 
 PTLIB_SIMPLE_OPTION([pipechan], [PIPECHAN], [enable pipechannel support])
@@ -1564,6 +1617,7 @@ PTLIB_NEW_OPTION(PIPECHAN)
 dnl ########################################################################
 dnl check for enabling DTMF support
 dnl MSWIN_DISPLAY  dtmf,DTMF encoding/decoding support
+dnl MSWIN_DEFAULT dtmf,Disabled
 dnl MSWIN_DEFINE   dtmf,P_DTMF
 
 PTLIB_SIMPLE_OPTION([dtmf], [DTMF], [enable DTMF protocol support])
@@ -1572,6 +1626,7 @@ PTLIB_NEW_OPTION(DTMF)
 dnl ########################################################################
 dnl check for enabling SOCKS support
 dnl MSWIN_DISPLAY    socks,SOCKS protocol support
+dnl MSWIN_DEFAULT socks,Disabled
 dnl MSWIN_DEFINE     socks,P_SOCKS
 
 PTLIB_SIMPLE_OPTION([socks], [SOCKS], [enable SOCKS protocol support])
@@ -1580,6 +1635,7 @@ PTLIB_NEW_OPTION(SOCKS)
 dnl ########################################################################
 dnl check for enabling FTP support
 dnl MSWIN_DISPLAY    ftp,FTP protocol support
+dnl MSWIN_DEFAULT ftp,Disabled
 dnl MSWIN_DEFINE     ftp,P_FTP
 
 PTLIB_SIMPLE_OPTION([ftp], [FTP], [enable FTP protocol support])
@@ -1588,6 +1644,7 @@ PTLIB_NEW_OPTION(FTP)
 dnl ########################################################################
 dnl check for enabling SNMP support
 dnl MSWIN_DISPLAY    snmp,SNMP protocol support
+dnl MSWIN_DEFAULT snmp,Disabled
 dnl MSWIN_DEFINE     snmp,P_SNMP
 
 PTLIB_SIMPLE_OPTION([snmp], [SNMP], [enable SNMP protocol support])
@@ -1596,6 +1653,7 @@ PTLIB_NEW_OPTION(SNMP)
 dnl ########################################################################
 dnl check for enabling TELNET support
 dnl MSWIN_DISPLAY    telnet,Telnet protocol support
+dnl MSWIN_DEFAULT telnet,Disabled
 dnl MSWIN_DEFINE     telnet,P_TELNET
 
 PTLIB_SIMPLE_OPTION([telnet], [TELNET], [enable TELNET protocol support])
@@ -1604,6 +1662,7 @@ PTLIB_NEW_OPTION(TELNET)
 dnl ########################################################################
 dnl check for enabling CLI support
 dnl MSWIN_DISPLAY    cli,Command ine interpreter support
+dnl MSWIN_DEFAULT cli,Enabled
 dnl MSWIN_DEFINE     cli,P_CLI
 
 PTLIB_SIMPLE_OPTION([cli], [CLI], [enable command line interpreter support])
@@ -1612,6 +1671,7 @@ PTLIB_NEW_OPTION(CLI)
 dnl ########################################################################
 dnl check for enabling REMCONN support
 dnl MSWIN_DISPLAY    remconn,remote connection support
+dnl MSWIN_DEFAULT remconn,Disabled
 dnl MSWIN_DEFINE     remconn,P_REMCONN
 
 PTLIB_SIMPLE_OPTION([remconn], [REMCONN], [enable remote connection support], [HAS_CONFIG_FILE], [HAS_PIPECHAN])
@@ -1620,6 +1680,7 @@ PTLIB_NEW_OPTION(REMCONN)
 dnl ########################################################################
 dnl check for enabling serial port handling
 dnl MSWIN_DISPLAY    serial,Serial Support
+dnl MSWIN_DEFAULT serial,Disabled
 dnl MSWIN_DEFINE     serial,P_SERIAL
 
 PTLIB_SIMPLE_OPTION([serial], [SERIAL], [enable serial port support])
@@ -1628,6 +1689,7 @@ PTLIB_NEW_OPTION(SERIAL)
 dnl ########################################################################
 dnl check for POP3/SMTP support
 dnl MSWIN_DISPLAY    pop3smtp,POP3/SMTP Support
+dnl MSWIN_DEFAULT pop3smtp,Disabled
 dnl MSWIN_DEFINE     pop3smtp,P_POP3SMTP
 
 PTLIB_SIMPLE_OPTION([pop3smtp], [POP3SMTP], [enable POP3/SMTP support])
@@ -1636,6 +1698,7 @@ PTLIB_NEW_OPTION(POP3SMTP)
 dnl ########################################################################
 dnl check for sound support
 dnl MSWIN_DISPLAY audio,Sound support
+dnl MSWIN_DEFAULT audio,Enabled
 dnl MSWIN_DEFINE  audio,P_AUDIO
 
 PTLIB_SIMPLE_OPTION([audio], [AUDIO], [enable audio support])
@@ -1644,6 +1707,7 @@ PTLIB_NEW_OPTION(AUDIO)
 dnl ########################################################################
 dnl check for enabling WAVFILE support
 dnl MSWIN_DISPLAY    wavfile,WAV file support
+dnl MSWIN_DEFAULT wavfile,Enabled
 dnl MSWIN_DEFINE     wavfile,P_WAVFILE
 
 PTLIB_SIMPLE_OPTION([wavfile], [WAVFILE], [enable WAVFILE support], [HAS_AUDIO])
@@ -1654,9 +1718,13 @@ dnl ########################################################################
 dnl look for QoS functions
 
 dnl MSWIN_DISPLAY    gqos,Microsoft Windows GQOS Support
+
+dnl MSWIN_DEFAULT gqos,Enabled
 dnl MSWIN_CHECK_FILE gqos,include\qossp.h|QOS_DESTADDR,P_GQOS=1
 
 dnl MSWIN_DISPLAY    qwave,Microsoft Windows qWAVE (QoS) Support
+
+dnl MSWIN_DEFAULT qwave,Enabled
 dnl MSWIN_CHECK_FILE qwave,include\qos2.h,P_QWAVE=1
 dnl MSWIN_CHECK_FILE qwave,include\qos2.h|QOSSetOutgoingDSCPValue,P_QWAVE_DSCP=1
 
@@ -1664,6 +1732,7 @@ dnl MSWIN_CHECK_FILE qwave,include\qos2.h|QOSSetOutgoingDSCPValue,P_QWAVE_DSCP=1
 dnl ########################################################################
 dnl check for video support
 dnl MSWIN_DISPLAY    video,Video Support
+dnl MSWIN_DEFAULT video,Disabled
 dnl MSWIN_DEFINE     video,P_VIDEO
 
 PTLIB_SIMPLE_OPTION([video], [VIDEO], [enable video device support])
@@ -1676,6 +1745,7 @@ fi
 dnl ########################################################################
 dnl check for enabling video file support
 dnl MSWIN_DISPLAY    vidfile,Video file support
+dnl MSWIN_DEFAULT vidfile,Disabled
 dnl MSWIN_DEFINE     vidfile,P_VIDFILE
 
 PTLIB_SIMPLE_OPTION([vidfile], [VIDFILE], [enable video file support], [HAS_VIDEO])
@@ -1684,6 +1754,7 @@ PTLIB_NEW_OPTION(VIDFILE)
 dnl ########################################################################
 dnl check for enabling FFMpeg video file support
 dnl MSWIN_DISPLAY    ffvdev,FFMpeg video file support
+dnl MSWIN_DEFAULT ffvdev,Disabled
 dnl MSWIN_DEFINE     ffvdev,P_FFVDEV
 
 PTLIB_SIMPLE_OPTION([ffvdev], [FFVDEV], [enable FFMpeg video file support], [HAS_FFVDEV], [HAS_PIPECHAN])
@@ -1692,6 +1763,7 @@ PTLIB_NEW_OPTION(FFVDEV)
 dnl ########################################################################
 dnl check for enabling app share support
 dnl MSWIN_DISPLAY    appshare,Application share support
+dnl MSWIN_DEFAULT appshare,Disabled
 dnl MSWIN_DEFINE     appshare,P_APPSHARE
 
 PTLIB_SIMPLE_OPTION([appshare], [APPSHARE], [enable application sharing support], [HAS_VIDEO])
@@ -1706,6 +1778,8 @@ dnl ########################################################################
 dnl look for SDL, but only if we have pthreads
 
 dnl MSWIN_DISPLAY    libsdl,Simple DirectMedia Layer
+
+dnl MSWIN_DEFAULT libsdl,Disabled
 dnl MSWIN_CHECK_FILE libsdl,lib\x86\SDL.lib,P_SDL_WIN32=1
 dnl MSWIN_CHECK_FILE libsdl,lib\x64\SDL.lib,P_SDL_WIN64=1
 dnl MSWIN_DIR_SYMBOL libsdl,SDL_DIR
@@ -1798,6 +1872,8 @@ dnl ########################################################################
 dnl look for ODBC code
 
 dnl MSWIN_DISPLAY    odbc,ODBC support
+
+dnl MSWIN_DEFAULT odbc,Disabled
 dnl MSWIN_CHECK_FILE odbc,include\odbcinst.h,P_ODBC=1
 dnl MSWIN_CHECK_FILE odbc,include\um\odbcinst.h,P_ODBC=1
 dnl MSWIN_CHECK_DIR  odbc,%ProgramFiles%\Windows Kits\8.0
@@ -1855,6 +1931,8 @@ dnl Plug ins!
 dnl
 
 dnl MSWIN_DISPLAY plugins,Plugin Support
+
+dnl MSWIN_DEFAULT plugins,Enabled
 dnl MSWIN_DEFINE  plugins,P_PLUGINS
 
 case "$target_os" in
@@ -1917,6 +1995,8 @@ if test "x$enable_plugins" != "xno" ; then
       dnl look for Direct Sound
 
       dnl MSWIN_DISPLAY    dsound,Direct Sound Support
+
+      dnl MSWIN_DEFAULT dsound,Disabled
       dnl MSWIN_CHECK_FILE dsound,include\dsound.h,P_DIRECTSOUND=1
       dnl MSWIN_CHECK_FILE dsound,include\um\dsound.h,P_DIRECTSOUND=1
       dnl MSWIN_FIND_FILE  dsound,P_DIRECTSOUND_DXERR_H,dxerr.h,include
@@ -1929,6 +2009,8 @@ if test "x$enable_plugins" != "xno" ; then
       dnl look for Direct Show (video)
 
       dnl MSWIN_DISPLAY    dshow,Direct Show Support
+
+      dnl MSWIN_DEFAULT dshow,Disabled
       dnl MSWIN_CHECK_FILE dshow,include\dshow.h,P_DIRECTSHOW=1
       dnl MSWIN_CHECK_FILE dshow,include\um\dshow.h,P_DIRECTSHOW=1
       dnl MSWIN_FIND_FILE  dshow,P_DIRECTSHOW_QEDIT_H,Qedit.h,include

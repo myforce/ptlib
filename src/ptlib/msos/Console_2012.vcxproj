@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -88,18 +88,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Lib\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\Lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)$(Platform)\$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)$(Platform)\$(Configuration)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Lib\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\Lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)$(Platform)\$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)$(Platform)\$(Configuration)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">..\..\..\Lib\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">..\..\..\Lib\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(OutDir)$(Platform)\$(Configuration)\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">$(OutDir)$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Lib2012\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\Lib2012\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)intermediate</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Lib2012\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\Lib2012\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)intermediate</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">..\..\..\Lib2012\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">..\..\..\Lib2012\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">$(OutDir)intermediate</IntDir>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\..\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\..\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\..\lib;$(LibraryPath)</LibraryPath>
@@ -650,10 +650,10 @@ bison -o ../common/getdate_tab.c ../common/getdate.y
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Configuring Build Options</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Configuring Build Options</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cd $(ProjectDir)\..\..\..
-configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cd $(ProjectDir)\..\..\..
-configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\..\..\..\configure.ac;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\..\..\..\configure.ac;%(AdditionalInputs)</AdditionalInputs>
@@ -662,10 +662,10 @@ configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLI
       <Message Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">Configuring Build Options</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">Configuring Build Options</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">cd $(ProjectDir)\..\..\..
-configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">cd $(ProjectDir)\..\..\..
-configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(ProjectDir)\..\..\..\configure.ac;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">$(ProjectDir)\..\..\..\configure.ac;%(AdditionalInputs)</AdditionalInputs>
@@ -674,10 +674,10 @@ configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLI
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Configuring Build Options</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Configuring Build Options</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd $(ProjectDir)\..\..\..
-configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cd $(ProjectDir)\..\..\..
-configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\..\..\..\configure.ac;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\..\..\..\configure.ac;%(AdditionalInputs)</AdditionalInputs>
@@ -688,39 +688,7 @@ configure --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLI
     <None Include="..\..\..\include\ptlib\osutil.inl" />
     <None Include="..\..\..\include\ptlib\msos\ptlib\ptlib.inl" />
     <None Include="..\..\..\configure.ac" />
-    <CustomBuild Include="..\..\..\revision.h.in">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\..\svn_getrev "%(FullPath)" "%(RootDir)%(Directory)%(Filename)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">del %(RootDir)%(Directory)%(Filename)
-SubWCRev %(RootDir)%(Directory) %(FullPath) %(RootDir)%(Directory)%(Filename)
-if errorlevel 1 $(ProjectDir)..\..\..\svn_getrev %(FullPath) %(RootDir)%(Directory)%(Filename)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Checking SVN revision include file.</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Checking SVN revision include file.</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)%(Filename)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory)%(Filename)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(ProjectDir)..\..\..\svn_getrev "%(FullPath)" "%(RootDir)%(Directory)%(Filename)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">del %(RootDir)%(Directory)%(Filename)
-SubWCRev %(RootDir)%(Directory) %(FullPath) %(RootDir)%(Directory)%(Filename)
-if errorlevel 1 $(ProjectDir)..\..\..\svn_getrev %(FullPath) %(RootDir)%(Directory)%(Filename)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">Checking SVN revision include file.</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">Checking SVN revision include file.</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">%(RootDir)%(Directory)%(Filename)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">%(RootDir)%(Directory)%(Filename)</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)..\..\..\svn_getrev "%(FullPath)" "%(RootDir)%(Directory)%(Filename)"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">del %(RootDir)%(Directory)%(Filename)
-SubWCRev %(RootDir)%(Directory) %(FullPath) %(RootDir)%(Directory)%(Filename)
-if errorlevel 1 $(ProjectDir)..\..\..\svn_getrev %(FullPath) %(RootDir)%(Directory)%(Filename)</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Checking SVN revision include file.</Message>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Checking SVN revision include file.</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)%(Filename)</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory)%(Filename)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory).svn\wc.db</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(RootDir)%(Directory).svn\wc.db</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">%(RootDir)%(Directory).svn\wc.db</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">%(RootDir)%(Directory).svn\wc.db</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory).svn\wc.db</AdditionalInputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(RootDir)%(Directory).svn\wc.db</AdditionalInputs>
-    </CustomBuild>
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\ptclib\jscript.h" />
