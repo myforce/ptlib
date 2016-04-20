@@ -544,7 +544,7 @@ dnl ########################################################################
 dnl check for Windows-like integer BOOL
 dnl
 dnl MSWIN_DISPLAY ansi-bool,ANSI C++ bool
-dnl MSWIN_DEFAULT ansi-bool,Disabled
+dnl MSWIN_DEFAULT ansi-bool,enabled
 dnl MSWIN_DEFINE  ansi-bool,P_USE_STANDARD_CXX_BOOL
 
 AC_ARG_ENABLE(ansi-bool, AS_HELP_STRING([--disable-ansi-bool],[Use Windows-like integer BOOL over ANSI C++ bool]))
