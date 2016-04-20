@@ -1553,7 +1553,7 @@ PINDEX PAbstractDictionary::GetValuesIndex(const PObject & obj) const
 
 PBoolean PAbstractDictionary::SetAt(PINDEX index, PObject * val)
 {
-  return AbstractSetAt(AbstractGetKeyAt(index), val);
+  return AbstractSetAt(AbstractGetKeyAt(index), val) != NULL;
 }
 
 
@@ -1566,7 +1566,7 @@ PObject * PAbstractDictionary::GetAt(PINDEX index) const
  
 PBoolean PAbstractDictionary::SetDataAt(PINDEX index, PObject * val)
 {
-  return AbstractSetAt(AbstractGetKeyAt(index), val);
+  return AbstractSetAt(AbstractGetKeyAt(index), val) != NULL;
 }
 
 
@@ -1594,7 +1594,6 @@ PObject * PAbstractDictionary::AbstractSetAt(const PObject & key, PObject * obj)
       element->m_data = obj;
     }
   }
-
   return obj;
 }
 

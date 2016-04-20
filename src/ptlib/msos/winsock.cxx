@@ -442,7 +442,7 @@ PBoolean PSocket::os_accept(PSocket & listener, struct sockaddr * addr, socklen_
 }
 
 
-bool PSocket::os_vread(Slice * slices, size_t sliceCount,
+PBoolean PSocket::os_vread(Slice * slices, size_t sliceCount,
                        int flags,
                        struct sockaddr * from,
                        socklen_t * fromlen)
@@ -458,7 +458,7 @@ bool PSocket::os_vread(Slice * slices, size_t sliceCount,
     P_timeval tv = readTimeout;
     int selval = ::select(0, readfds, NULL, NULL, tv);
     if (!ConvertOSError(selval, LastReadError))
-      return false;
+      return PFalse;
 
     if (selval == 0)
       return SetErrorValues(Timeout, ETIMEDOUT, LastReadError);
@@ -469,14 +469,14 @@ bool PSocket::os_vread(Slice * slices, size_t sliceCount,
   int recvResult = WSARecvFrom(os_handle, slices, sliceCount, &receivedCount, &dflags, from, fromlen, NULL, NULL);
 
   if (!ConvertOSError(recvResult, LastReadError))
-    return false;
+    return PFalse;
 
   lastReadCount = receivedCount;
-  return true;
+  return PTrue;
 }
 
 
-bool PSocket::os_vwrite(const Slice * slices,
+PBoolean PSocket::os_vwrite(const Slice * slices,
                         size_t sliceCount,
                         int flags,
                         struct sockaddr * to,

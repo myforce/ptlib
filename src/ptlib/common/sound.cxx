@@ -382,14 +382,14 @@ PBoolean PSoundChannel::SetVolume(unsigned volume)
 }
 
 
-PBoolean PSoundChannel::GetMute(bool & mute)
+PBoolean PSoundChannel::GetMute(PBoolean & mute)
 {
   PReadWaitAndSignal mutex(channelPointerMutex);
   return readChannel != NULL && GetSoundChannel()->GetMute(mute);
 }
 
 
-PBoolean PSoundChannel::SetMute(bool mute)
+PBoolean PSoundChannel::SetMute(PBoolean mute)
 {
   PReadWaitAndSignal mutex(channelPointerMutex);
   return readChannel != NULL && GetSoundChannel()->SetMute(mute);

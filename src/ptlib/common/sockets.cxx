@@ -2385,38 +2385,38 @@ PIPDatagramSocket::PIPDatagramSocket()
 }
 
 
-bool PIPDatagramSocket::ReadFrom(void * buf, PINDEX len, Address & addr, WORD & port)
+PBoolean PIPDatagramSocket::ReadFrom(void * buf, PINDEX len, Address & addr, WORD & port)
 {
   PIPSocketAddressAndPort ap;
   Slice slice(buf, len); 
-  bool stat = InternalReadFrom(&slice, 1, ap);
+  PBoolean stat = InternalReadFrom(&slice, 1, ap);
   addr = ap.GetAddress();
   port = ap.GetPort();
   return stat;
 }
 
-bool PIPDatagramSocket::ReadFrom(void * buf, PINDEX len, PIPSocketAddressAndPort & ipAndPort)
+PBoolean PIPDatagramSocket::ReadFrom(void * buf, PINDEX len, PIPSocketAddressAndPort & ipAndPort)
 {
   Slice slice(buf, len); 
   return InternalReadFrom(&slice, 1, ipAndPort);
 }
 
 
-bool PIPDatagramSocket::ReadFrom(Slice * slices, size_t sliceCount, Address & addr, WORD & port)
+PBoolean PIPDatagramSocket::ReadFrom(Slice * slices, size_t sliceCount, Address & addr, WORD & port)
 {
   PIPSocketAddressAndPort ap;
-  bool stat = InternalReadFrom(slices, sliceCount, ap);
+  PBoolean stat = InternalReadFrom(slices, sliceCount, ap);
   addr = ap.GetAddress();
   port = ap.GetPort();
   return stat;
 }
 
-bool PIPDatagramSocket::ReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort)
+PBoolean PIPDatagramSocket::ReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort)
 {
   return InternalReadFrom(slices, sliceCount, ipAndPort);
 }
 
-bool PIPDatagramSocket::InternalReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort)
+PBoolean PIPDatagramSocket::InternalReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort)
 {
   lastReadCount = 0;
 
@@ -2435,7 +2435,7 @@ bool PIPDatagramSocket::InternalReadFrom(Slice * slices, size_t sliceCount, PIPS
 }
 
 
-bool PIPDatagramSocket::WriteTo(const void * buf, PINDEX len, const Address & addr, WORD port)
+PBoolean PIPDatagramSocket::WriteTo(const void * buf, PINDEX len, const Address & addr, WORD port)
 {
   PIPSocketAddressAndPort ap(addr, port);
   Slice slice((void *)buf, (size_t)len); 
@@ -2443,27 +2443,27 @@ bool PIPDatagramSocket::WriteTo(const void * buf, PINDEX len, const Address & ad
 }
 
 
-bool PIPDatagramSocket::WriteTo(const void * buf, PINDEX len, const PIPSocketAddressAndPort & ipAndPort)
+PBoolean PIPDatagramSocket::WriteTo(const void * buf, PINDEX len, const PIPSocketAddressAndPort & ipAndPort)
 {
   Slice slice((void *)buf, len); 
   return InternalWriteTo(&slice, 1, ipAndPort);
 }
 
 
-bool PIPDatagramSocket::WriteTo(const Slice * slices, size_t sliceCount, const Address & addr, WORD port)
+PBoolean PIPDatagramSocket::WriteTo(const Slice * slices, size_t sliceCount, const Address & addr, WORD port)
 {
   PIPSocketAddressAndPort ap(addr, port);
   return InternalWriteTo(slices, sliceCount, ap);
 }
 
 
-bool PIPDatagramSocket::WriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort)
+PBoolean PIPDatagramSocket::WriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort)
 {
   return InternalWriteTo(slices, sliceCount, ipAndPort);
 }
 
 
-bool PIPDatagramSocket::InternalWriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort)
+PBoolean PIPDatagramSocket::InternalWriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort)
 {
   lastWriteCount = 0;
 
@@ -2479,10 +2479,10 @@ bool PIPDatagramSocket::InternalWriteTo(const Slice * slices, size_t sliceCount,
   if (broadcast) {
 #ifdef P_BEOS
     PAssertAlways("Broadcast option under BeOS is not implemented yet");
-    return false;
+    return PFalse;
 #else
     if (!SetOption(SO_BROADCAST, 1))
-      return false;
+      return PFalse;
 #endif
   }
   

@@ -947,7 +947,7 @@ class PAbstractSortedList : public PCollection
     void RemoveElement(PSortedListElement * node);
     void LeftRotate(PSortedListElement * node);
     void RightRotate(PSortedListElement * node);
-    void DeleteSubTrees(PSortedListElement * node, bool deleteObject);
+    void DeleteSubTrees(PSortedListElement * node, PBoolean deleteObject);
     PSortedListElement * FindElement(const PObject & obj, PINDEX * index) const;
     PSortedListElement * FindElement(const PObject * obj, PINDEX * index) const;
 

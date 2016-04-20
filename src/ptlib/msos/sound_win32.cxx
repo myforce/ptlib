@@ -1544,7 +1544,7 @@ PBoolean PSoundChannelWin32::GetVolume(unsigned & oldVolume)
 }
 
 
-bool PSoundChannelWin32::SetMute(bool newMute)
+PBoolean PSoundChannelWin32::SetMute(PBoolean newMute)
 {
   if (CheckNotOpen())
     false;
@@ -1571,7 +1571,7 @@ bool PSoundChannelWin32::SetMute(bool newMute)
 }
 
 
-bool PSoundChannelWin32::GetMute(bool & oldMute)
+PBoolean PSoundChannelWin32::GetMute(PBoolean & oldMute)
 {
   if (CheckNotOpen())
     return false;

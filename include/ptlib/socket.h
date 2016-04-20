@@ -464,7 +464,7 @@ class PSocket : public PChannel
        true indicates that at least one character was read from the channel.
        false means no bytes were read due to timeout or some other I/O error.
      */
-    virtual bool Read(
+    virtual PBoolean Read(
       Slice * slices,    // slices to read to
       size_t sliceCount
     );
@@ -478,7 +478,7 @@ class PSocket : public PChannel
        true indicates that at least one character was read from the channel.
        false means no bytes were read due to timeout or some other I/O error.
      */
-    virtual bool Write(
+    virtual PBoolean Write(
       const Slice * slices,  // slices to write from
       size_t sliceCount
     );

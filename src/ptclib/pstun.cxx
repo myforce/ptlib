@@ -1409,8 +1409,7 @@ struct PSTUNSocketPairInfo {
   PSTUNMessage     m_response;
 };
 
-
-bool PSTUNClient::CreateSocketPair(PUDPSocket * & socket1,
+PBoolean PSTUNClient::CreateSocketPair(PUDPSocket * & socket1,
                                    PUDPSocket * & socket2,
                                    const PIPSocket::Address & binding,
                                    PObject * context)
@@ -1652,7 +1651,7 @@ int PTURNUDPSocket::OpenTURN(PTURNClient & client)
 }
 
 
-bool PTURNUDPSocket::Close()
+PBoolean PTURNUDPSocket::Close()
 {
   // delete allocation
   if (m_allocationMade) {
@@ -1733,7 +1732,7 @@ void PTURNUDPSocket::InternalSetSendAddress(const PIPSocketAddressAndPort & ipAn
 
 
 
-bool PTURNUDPSocket::InternalWriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort)
+PBoolean PTURNUDPSocket::InternalWriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort)
 {
   if (!m_usingTURN)
     return PUDPSocket::InternalWriteTo(slices, sliceCount, ipAndPort);
@@ -1759,7 +1758,7 @@ bool PTURNUDPSocket::InternalWriteTo(const Slice * slices, size_t sliceCount, co
     ++i;
   }
 
-  bool status = PUDPSocket::InternalWriteTo(&m_txVect[0], i+1, m_serverAddress);
+  PBoolean status = PUDPSocket::InternalWriteTo(&m_txVect[0], i+1, m_serverAddress);
 
   if (status)
     lastWriteCount -= sizeof(m_txVect[1].GetLength());
@@ -1768,7 +1767,7 @@ bool PTURNUDPSocket::InternalWriteTo(const Slice * slices, size_t sliceCount, co
 }
 
 
-bool PTURNUDPSocket::InternalReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort)
+PBoolean PTURNUDPSocket::InternalReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort)
 {
   if (!m_usingTURN)
     return PUDPSocket::InternalReadFrom(slices, sliceCount, ipAndPort);
@@ -1916,13 +1915,13 @@ bool PTURNClient::CreateSocket(PUDPSocket * & socket, const PIPSocket::Address &
   return socket != NULL;
 }
 
-bool PTURNClient::CreateSocketPair(PUDPSocket * & socket1,
+PBoolean PTURNClient::CreateSocketPair(PUDPSocket * & socket1,
                                    PUDPSocket * & socket2,
                                    const PIPSocket::Address & binding,
                                    PObject *)
 {
   if (!binding.IsAny() && binding != m_interface)
-    return false;
+    return PFalse;
 
   socket1 = NULL;
   socket2 = NULL;
@@ -1958,7 +1957,7 @@ bool PTURNClient::CreateSocketPair(PUDPSocket * & socket1,
   socket1 = turnSocket1;
   socket2 = turnSocket2;
 
-  return true;
+  return PTrue;
 }
 
 
