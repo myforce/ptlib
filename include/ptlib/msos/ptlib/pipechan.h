@@ -35,6 +35,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 // PPipeChannel
 
+#ifdef P_PIPECHAN
+
   public:
     virtual PBoolean IsOpen() const;
   protected:
@@ -42,5 +44,7 @@
     PWin32Handle m_hToChild;
     PWin32Handle m_hFromChild;
     PWin32Handle m_hStandardError;
+
+#endif //P_PIPECHAN
 
 // End Of File ///////////////////////////////////////////////////////////////
