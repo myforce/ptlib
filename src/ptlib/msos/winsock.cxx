@@ -107,7 +107,12 @@ struct PWinSock : public PProcessStartup
 
 #if P_GQOS
     // Use for NT (5.1) and Win2003 (5.2) but not Win2000 (5.0) or Vista and later (6.x)
-    m_useGQOS = PProcess::IsOSVersion(5,1,0) && !PProcess::IsOSVersion(6,0,0);
+    OSVERSIONINFO info;
+    info.dwOSVersionInfoSize = sizeof(info);
+    GetVersionEx(&info);
+	m_useGQOS = info.dwMajorVersion > 6  || (info.dwMajorVersion == 6 && info.dwMinorVersion > 0) ; //Only Win7 and above 
+	if (m_useGQOS)
+		PTRACE(2, "DEBUG TOS: Init => Using GQOS");
 #endif // P_GQOS
 
 #if P_QWAVE
@@ -121,6 +126,7 @@ struct PWinSock : public PProcessStartup
         qosVersion.MinorVersion = 0;
         QOSCreateHandle(&qosVersion, &m_hQoS);
         FreeLibrary(hTest);
+	  PTRACE(2, "DEBUG TOS: Init => Loaded QWAVE.DLL");
       }
     }
 #endif // P_QWAVE
@@ -311,7 +317,8 @@ int PSocket::os_socket(int af, int type, int proto)
 {
 #if P_GQOS
   if (PWinSock::GetInstance().m_useGQOS) {
-    //Try to find a QOS-enabled protocol
+    PTRACE(2, "DEBUG TOS: os_socket => GQOS try to find QOS-enabled protocol");
+	//Try to find a QOS-enabled protocol
     DWORD bufferSize = 0;
     int numProtocols = WSAEnumProtocols(NULL, NULL, &bufferSize);
     if (numProtocols <= 0 && WSAGetLastError() != WSAENOBUFS) 
@@ -325,11 +332,15 @@ int PSocket::os_socket(int af, int type, int proto)
       if (  qosProtocol->iSocketType == type &&
             qosProtocol->iAddressFamily == af &&
            (qosProtocol->dwServiceFlags1 & XP1_QOS_SUPPORTED) != 0)
+	  {
+		  PTRACE(2, "DEBUG TOS: os_socket => GQOS protocol found");
         return (int)WSASocket(af, type, proto, qosProtocol, 0, WSA_FLAG_OVERLAPPED);
+	  }
     }
   }
 #endif // P_GQOS
 
+  PTRACE(2, "DEBUG TOS: os_socket => Not using GQOS or GQOS request failed.");
   return (int)WSASocket(af, type, proto, NULL, 0, WSA_FLAG_OVERLAPPED);
 }
 
@@ -1033,16 +1044,22 @@ PIPSocket::Address PIPSocket::GetGatewayInterfaceAddress(unsigned version)
 
 bool PIPSocket::SetQoS(const QoS & qos)
 {
-  m_qos = qos;
+m_qos = qos;
+
+  if (!IsOpen())
+    return false;
 
   int new_tos = qos.m_dscp >= 0 || qos.m_dscp < 64 ? (qos.m_dscp<<2) : -1;
+  PTRACE(2, "DEBUG TOS: SetQoS => new_tos:" << new_tos << " - qos.m_dscp:" << qos.m_dscp);
 
 #if P_GQOS
-  if (PWinSock::GetInstance().m_useGQOS && new_tos < 0 && qos.m_type != BestEffortQoS) {
-    QOS qosBuf;
+  if (PWinSock::GetInstance().m_useGQOS && new_tos < 0 && qos.m_type != BestEffortQoS) 
+  {
+	PTRACE(2, "DEBUG TOS: SetQoS => Using GQOS");
+	QOS qosBuf;
     memset(&qosBuf, 0, sizeof(qosBuf));
 
-    static DWORD const ServiceType[NumQoSType] = {
+	static DWORD const ServiceType[NumQoSType] = {
       SERVICETYPE_BESTEFFORT,     // BackgroundQoS
       SERVICETYPE_BESTEFFORT,     // BestEffortQoS
       SERVICETYPE_CONTROLLEDLOAD, // ExcellentEffortQoS
@@ -1051,127 +1068,159 @@ bool PIPSocket::SetQoS(const QoS & qos)
       SERVICETYPE_GUARANTEED,     // VoiceQoS
       SERVICETYPE_GUARANTEED      // ControlQoS
     };
-    qosBuf.SendingFlowspec.ServiceType = ServiceType[qos.m_type];
-    qosBuf.SendingFlowspec.PeakBandwidth = qos.m_transmit.m_maxBandwidth;
-    qosBuf.SendingFlowspec.MaxSduSize = qos.m_transmit.m_maxPacketSize;
-    qosBuf.SendingFlowspec.Latency = qos.m_transmit.m_maxLatency;
-    qosBuf.SendingFlowspec.DelayVariation = qos.m_transmit.m_maxJitter;
-    qosBuf.SendingFlowspec.TokenBucketSize = qos.m_transmit.m_maxPacketSize*11/10 + 1;
-    qosBuf.SendingFlowspec.TokenRate = qos.m_transmit.m_maxBandwidth/qosBuf.SendingFlowspec.TokenBucketSize;
+	qosBuf.SendingFlowspec.ServiceType = ServiceType[qos.m_type];
+    qosBuf.SendingFlowspec.PeakBandwidth =  2 * 1024 * 1024; // qos.m_transmit.m_maxBandwidth;
+    qosBuf.SendingFlowspec.MaxSduSize = QOS_NOT_SPECIFIED; // qos.m_transmit.m_maxPacketSize * 2;
+    qosBuf.SendingFlowspec.Latency = QOS_NOT_SPECIFIED; // qos.m_transmit.m_maxLatency;
+    qosBuf.SendingFlowspec.DelayVariation = QOS_NOT_SPECIFIED; //qos.m_transmit.m_maxJitter;
+    qosBuf.SendingFlowspec.TokenBucketSize = 500;//qos.m_transmit.m_maxPacketSize*11/10 + 1;
+    qosBuf.SendingFlowspec.TokenRate = 1*1024*1024;//qos.m_transmit.m_maxBandwidth/qosBuf.SendingFlowspec.TokenBucketSize;
 
-    qosBuf.ReceivingFlowspec.ServiceType = ServiceType[qos.m_type];
-    qosBuf.ReceivingFlowspec.PeakBandwidth = qos.m_receive.m_maxBandwidth;
-    qosBuf.ReceivingFlowspec.MaxSduSize = qos.m_receive.m_maxPacketSize;
-    qosBuf.ReceivingFlowspec.Latency = qos.m_receive.m_maxLatency;
-    qosBuf.ReceivingFlowspec.DelayVariation = qos.m_receive.m_maxJitter;
-    qosBuf.ReceivingFlowspec.TokenBucketSize = qos.m_receive.m_maxPacketSize*11/10 + 1;
-    qosBuf.ReceivingFlowspec.TokenRate = qos.m_receive.m_maxBandwidth/qosBuf.ReceivingFlowspec.TokenBucketSize;
+	qosBuf.ReceivingFlowspec.ServiceType = SERVICETYPE_BESTEFFORT|SERVICE_NO_QOS_SIGNALING; //ServiceType[qos.m_type];
+    qosBuf.ReceivingFlowspec.PeakBandwidth = QOS_NOT_SPECIFIED; // 2 * 1024 * 1024; //qos.m_receive.m_maxBandwidth;
+    qosBuf.ReceivingFlowspec.MaxSduSize = QOS_NOT_SPECIFIED; // qos.m_receive.m_maxPacketSize * 2;
+    qosBuf.ReceivingFlowspec.Latency = QOS_NOT_SPECIFIED; // qos.m_receive.m_maxLatency;
+    qosBuf.ReceivingFlowspec.DelayVariation = QOS_NOT_SPECIFIED; // qos.m_receive.m_maxJitter;
+    qosBuf.ReceivingFlowspec.TokenBucketSize = QOS_NOT_SPECIFIED; // qos.m_receive.m_maxPacketSize*11/10 + 1;
+    qosBuf.ReceivingFlowspec.TokenRate = QOS_NOT_SPECIFIED; // 1*1024*1024;//qos.m_receive.m_maxBandwidth/qosBuf.ReceivingFlowspec.TokenBucketSize;
 
     PWin32Overlapped overlap;
-    DWORD dummyBuf[1];
     DWORD dummyLen = 0;
-    if (ConvertOSError(WSAIoctl(os_handle, SIO_SET_QOS, &qosBuf, sizeof(qosBuf), dummyBuf, sizeof(dummyBuf), &dummyLen, &overlap, NULL))) {
-      if (qos.m_dscp < 0)
-        return true;
+	int nTest = WSAIoctl(os_handle, SIO_SET_QOS, &qosBuf, sizeof(qosBuf), NULL, 0, &dummyLen, &overlap, NULL);
+	PTRACE(2, "DEBUG TOS: SetQoS => WSAIoctl return code:" << nTest);
+    if (ConvertOSError(nTest)) 
+	{
+		PTRACE(2, "DEBUG TOS: SetQoS => Using GQOS succeeded");
+		if (qos.m_dscp < 0)
+		{
+			PTRACE(2, "DEBUG TOS: SetQoS => Using GQOS succeeded and qos.m_dscp > 0 => Return");
+			return true;
+		}
     }
-    else {
-      PTRACE(2, "Could not SIO_SET_QOS: " << GetErrorText());
+    else 
+	{
+	  PTRACE(2, "DEBUG TOS: SetQoS => Using GQOS failed. With errorcode: " << ::GetLastError());
+      PTRACE(2, "Socket\tCould not SIO_SET_QOS: " << ::GetLastError());
     }
   }
 #endif // P_GQOS
 
 #if P_QWAVE
-  if (PWinSock::GetInstance().m_hQoS != NULL) {
-    static QOS_TRAFFIC_TYPE const TrafficType[NumQoSType] = {
-      QOSTrafficTypeBackground,      // BackgroundQoS
-      QOSTrafficTypeBestEffort,      // BestEffortQoS
-      QOSTrafficTypeExcellentEffort, // ExcellentEffortQoS
-      QOSTrafficTypeControl,         // CriticalQoS
-      QOSTrafficTypeAudioVideo,      // VideoQoS
-      QOSTrafficTypeVoice,           // VoiceQoS
-      QOSTrafficTypeControl          // ControlQoS
-    };
+    PIPSocketAddressAndPort peer = qos.m_remote;
+    if (!peer.IsValid())
+      GetPeerAddress(peer);
 
-    if (m_qosFlowId == 0) {
-      PIPSocketAddressAndPort peer = qos.m_remote;
-      if (!peer.IsValid() && !GetPeerAddress(peer)) {
-        PTRACE(3, "Cannot set QoS, no peer address yet.");
-        return false;
+    if (PWinSock::GetInstance().m_hQoS != NULL && peer.IsValid()) 
+	{
+		PTRACE(2, "DEBUG TOS: SetQoS => Using QWAVE");
+      static QOS_TRAFFIC_TYPE const TrafficType[NumQoSType] = {
+        QOSTrafficTypeBackground,      // BackgroundQoS
+        QOSTrafficTypeBestEffort,      // BestEffortQoS
+        QOSTrafficTypeExcellentEffort, // ExcellentEffortQoS
+        QOSTrafficTypeControl,         // CriticalQoS
+        QOSTrafficTypeAudioVideo,      // VideoQoS
+        QOSTrafficTypeVoice,           // VoiceQoS
+        QOSTrafficTypeControl          // ControlQoS
+      };
+
+      bool ok = false;
+      if (m_qosFlowId == 0) 
+	  {
+        if (qos.m_type != BestEffortQoS || new_tos >= 0 || qos.m_transmit.m_maxBandwidth > 0) {
+          ok = QOSAddSocketToFlow(PWinSock::GetInstance().m_hQoS, os_handle,
+                                  peer.IsValid() ? (PSOCKADDR)sockaddr_wrapper(peer) : (PSOCKADDR)NULL,
+                                  TrafficType[qos.m_type], QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId);
+          PTRACE_IF(1, !ok, "WinSock", "Could not add socket to QoS flow, error=" << ::GetLastError());
+		  if (!ok)
+			 PTRACE(2, "DEBUG TOS: SetQoS => Could not add socket to QoS flow. With errorcode: " << ::GetLastError());
+        }
+      }
+      else 
+	  {
+        ok = QOSSetFlow(PWinSock::GetInstance().m_hQoS, m_qosFlowId, QOSSetTrafficType, sizeof(QOS_TRAFFIC_TYPE), (PVOID)&TrafficType[qos.m_type], 0, NULL);
+        PTRACE_IF(1, !ok, "WinSock", "Could not set QoS flow, error=" << ::GetLastError());
+		if (!ok)
+			 PTRACE(2, "DEBUG TOS: SetQoS => Could not add socket to QoS flow (2). With errorcode: " << ::GetLastError());
       }
 
-      if (!QOSAddSocketToFlow(PWinSock::GetInstance().m_hQoS, os_handle,
-                              sockaddr_wrapper(peer), TrafficType[qos.m_type], QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId)) {
-        PTRACE(1, "Could not add socket to QoS flow, error=" << ::GetLastError());
-        return false;
+      if (ok && qos.m_transmit.m_maxBandwidth > 0) 
+	  {
+        QOS_FLOWRATE_OUTGOING out;
+        out.Bandwidth = qos.m_transmit.m_maxBandwidth;
+        out.ShapingBehavior = QOSUseNonConformantMarkings;
+        out.Reason = QOSFlowRateNotApplicable;
+        if (!QOSSetFlow(PWinSock::GetInstance().m_hQoS, m_qosFlowId, QOSSetOutgoingRate, sizeof(out), &out, 0, NULL)) {
+          PTRACE(1, "WinSock", "Could not set QoS rates, error=" << ::GetLastError());
+		  PTRACE(2, "DEBUG TOS: SetQoS => Could not set QoS rates. With errorcode: " << ::GetLastError());
+        }
+		else
+			 PTRACE(2, "DEBUG TOS: SetQoS => QoS rates are set.");
       }
-    }
-    else {
-      if (!QOSSetFlow(PWinSock::GetInstance().m_hQoS, m_qosFlowId, QOSSetTrafficType,
-                      sizeof(QOS_TRAFFIC_TYPE), (PVOID)&TrafficType[qos.m_type], 0, NULL)) {
-        PTRACE(1, "Could not set QoS flow, error=" << ::GetLastError());
-        return false;
-      }
-    }
 
-    if (qos.m_transmit.m_maxBandwidth > 0) {
-      QOS_FLOWRATE_OUTGOING out;
-      out.Bandwidth = qos.m_transmit.m_maxBandwidth;
-      out.ShapingBehavior = QOSUseNonConformantMarkings;
-      out.Reason = QOSFlowRateNotApplicable;
-      if (!QOSSetFlow(PWinSock::GetInstance().m_hQoS, m_qosFlowId, QOSSetOutgoingRate, sizeof(out), &out, 0, NULL)) {
-        PTRACE(2, "Could not set QoS rates, error=" << ::GetLastError());
-      }
-    }
-
+      if (ok && new_tos >= 0) 
+	  {
 #if P_QWAVE_DSCP
-    if (new_tos < 0)
-      return true;
-
-    DWORD dscp = qos.m_dscp;
-    if (QOSSetFlow(PWinSock::GetInstance().m_hQoS, m_qosFlowId, QOSSetOutgoingDSCPValue, sizeof(dscp), &dscp, 0, NULL))
-      return true;
-
-    PTRACE(2, "Could not set DSCP, error=" << ::GetLastError());
-    return false;
+        DWORD dscp = qos.m_dscp;
+        if (!QOSSetFlow(PWinSock::GetInstance().m_hQoS, m_qosFlowId, QOSSetOutgoingDSCPValue, sizeof(dscp), &dscp, 0, NULL)) 
+		{
+          PTRACE(1, "WinSock", "Could not set DSCP, error=" << ::GetLastError());
+        }
+		else
+			PTRACE(2, "DEBUG TOS: SetQoS => DSCP value set to: " << dscp);
+#else
+        ok = false;
 #endif // P_QWAVE_DSCP
-  }
+      }
+
+      if (ok)
+	  {
+		PTRACE(2, "DEBUG TOS: SetQoS => Set TOS/DSCP succeeded with QWAVE => Return");
+        return true;
+	  }
+    }
 #endif // P_QWAVE
 
   // Not explicitly set, so make a value up.
   if (new_tos < 0) {
-    static int const DSCP[PIPSocket::NumQoSType] = {
+    static int const DSCP[NumQoSType] = {
       0,     // BackgroundQoS
       0,     // BestEffortQoS
       8<<2,  // ExcellentEffortQoS
       10<<2, // CriticalQoS
       38<<2, // VideoQoS
-      44<<2, // VoiceQoS
+      40<<2, // VoiceQoS
       48<<2  // ControlQoS
     };
     new_tos = DSCP[qos.m_type];
+	PTRACE(2, "DEBUG TOS: SetQoS => new_tos < 0 select random QOS based on type. qos.m_type: "<<qos.m_type);
   }
+  PTRACE(2, "Socket\tQOS via SetOption: " << GetErrorText());
+  
+  PTRACE(2, "DEBUG TOS: SetQoS => Setting qos with SetOption(IP_TOS,...). new_tos:" << new_tos);
+  // On Win7 and later this succeeds, does not actually do anything. Useless!
 
-  // On Win7 and later IP_TOS succeeds, but does not actually do anything. Useless!
-  if (PProcess::IsOSVersion(6, 1, 0)) {
-    PTRACE(3, "Setting TOS field of IP header does not work in Windows 7 and later.");
-    return false;
-  }
-
-  if (!SetOption(IP_TOS, new_tos, IPPROTO_IP)) {
-    PTRACE(2, "Could not set TOS field in IP header: " << GetErrorText());
+  if (!SetOption(IP_TOS, new_tos, IPPROTO_IP)) 
+  {	
+	  PTRACE(2, "DEBUG TOS: SetQoS => SetOption failed with error: "<< ::GetLastError() << " => Return");
+    PTRACE(2, "Socket\tCould not set TOS field in IP header: " << GetErrorText());
     return false;
   }
 
   int actual_tos;
-  if (!GetOption(IP_TOS, actual_tos, IPPROTO_IP)) {
-    PTRACE(1, "Could not get TOS field in IP header: " << GetErrorText());
+  if (!GetOption(IP_TOS, actual_tos, IPPROTO_IP)) 
+  {
+	PTRACE(2, "DEBUG TOS: SetQoS => GetOption failed with error: "<< ::GetLastError() << " => Return");
+    PTRACE(1, "Socket\tCould not get TOS field in IP header: " << ::GetLastError() );
     return false;
   }
 
   if (new_tos == actual_tos)
-    return true;
-
-  PTRACE(2, "Setting TOS field of IP header appeared successful, but was not really set.");
+  {
+	  PTRACE(2, "DEBUG TOS: SetQoS => TOS seems to be correct after setting it. Actual tos: " << actual_tos << " => Return");
+	  return true;
+  }
+  PTRACE(2, "Socket\tSetting TOS field of IP header appeared successful, but was not really set.");
+  PTRACE(2, "DEBUG TOS: SetQoS => TOS seems to not to match. Requested tos: " << new_tos << " - Actual tos: " << actual_tos << " => Return");
   return false;
 }
 
