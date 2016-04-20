@@ -1397,7 +1397,7 @@ bool NT_ServiceManager::IsRunning(PServiceProcess * svc)
 
 
 
-bool PServiceProcess::ProcessCommand(const char * cmd)
+PBoolean PServiceProcess::ProcessCommand(const char * cmd)
 {
   if (*cmd == '/')
     ++cmd;

@@ -512,8 +512,8 @@ class PSoundChannel : public PChannel
        @return
        true if there were no errors.
     */
-    virtual bool SetMute(
-      bool mute   ///< New mute state
+    virtual PBoolean SetMute(
+      PBoolean mute   ///< New mute state
     );
 
     /**Get the mute state of the play/read process.
@@ -521,8 +521,8 @@ class PSoundChannel : public PChannel
        @return
        true if there were no errors.
     */
-    virtual bool GetMute(
-      bool & mute   ///< Variable to receive mute state.
+    virtual PBoolean GetMute(
+      PBoolean & mute   ///< Variable to receive mute state.
     );
 
   //@}

@@ -277,8 +277,8 @@ class PIndirectChannel : public PChannel
     */
     PBoolean SetWriteChannel(
       PChannel * channel,         ///< Channel to be used for both read operations.
-      bool autoDelete = true,     ///< Automatically delete the channel
-      bool closeExisting = false  ///< Close (and auto-delete) the existing read channel
+      PBoolean autoDelete = true,     ///< Automatically delete the channel
+      PBoolean closeExisting = false  ///< Close (and auto-delete) the existing read channel
     );
   //@}
 

@@ -1626,7 +1626,7 @@ PBoolean PSoundChannelWin32::GetVolume(unsigned & oldVolume)
 }
 
 
-bool PSoundChannelWin32::SetMute(bool newMute)
+PBoolean PSoundChannelWin32::SetMute(PBoolean newMute)
 {
   if (!IsOpen() || hMixer == NULL)
     return SetErrorValues(NotOpen, EBADF);
@@ -1651,7 +1651,7 @@ bool PSoundChannelWin32::SetMute(bool newMute)
 }
 
 
-bool PSoundChannelWin32::GetMute(bool & oldMute)
+PBoolean PSoundChannelWin32::GetMute(PBoolean & oldMute)
 {
   if (!IsOpen() || hMixer == NULL)
     return SetErrorValues(NotOpen, EBADF);
