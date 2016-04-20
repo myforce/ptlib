@@ -38,6 +38,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // PPipeChannel
+#if P_PIPECHAN
 
 PPipeChannel::PPipeChannel()
 {
@@ -355,6 +356,7 @@ PBoolean PPipeChannel::ReadStandardError(PString & errors, PBoolean wait)
                         &bytesRead, NULL) ? 0 : -2, LastReadError);
 }
 #endif // !_WIN32_WCE
+#endif // P_PIPECHAN
 
 
 // End Of File ///////////////////////////////////////////////////////////////
