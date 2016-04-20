@@ -230,11 +230,11 @@ class PInternetProtocol : public PIndirectChannel
        @return
        true if the command was completely written.
      */
-    virtual bool WriteCommand(
+    virtual PBoolean WriteCommand(
       PINDEX cmdNumber,                         ///< Number of command to write.
       const PString & param = PString::Empty()  ///< Extra parameters required by the command.
     );
-    virtual bool WriteCommand(
+    virtual PBoolean WriteCommand(
       PINDEX cmdNumber,                         ///< Number of command to write.
       const PString & param,                    ///< Extra parameters required by the command.
       const PMIMEInfo & mime                    ///< Optional MIME info sent after the command.

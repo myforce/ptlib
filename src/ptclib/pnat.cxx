@@ -220,7 +220,7 @@ bool PNatMethod::CreateSocket(Component component, PUDPSocket * & socket, const 
 }
 
 
-bool PNatMethod::CreateSocketPair(PUDPSocket * & socket1, PUDPSocket * & socket2, const PIPSocket::Address & binding)
+PBoolean PNatMethod::CreateSocketPair(PUDPSocket * & socket1, PUDPSocket * & socket2, const PIPSocket::Address & binding)
 {
   WORD localPort = pairedPortInfo.GetRandomPair();
   socket1 = new PNATUDPSocket(eComponent_RTP);
