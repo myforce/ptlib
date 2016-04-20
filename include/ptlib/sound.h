@@ -737,9 +737,13 @@ class PSoundChannel : public PChannel
     virtual PBoolean WaitForAllRecordBuffersFull();
   //@}
 
+	LONG_PTR GetErrorThreadId() const { return m_ErrorThreadId; }
+	void SetErrorThreadId(LONG_PTR val) { m_ErrorThreadId = val; }
+
   protected:
     PSoundChannel * m_baseChannel;
     PReadWriteMutex m_baseMutex;
+	LONG_PTR m_ErrorThreadId;
 
     /**This is the direction that this sound channel is opened for use
        in.  Should the user attempt to used this opened class instance
