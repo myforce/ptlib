@@ -743,8 +743,12 @@ class PSoundChannel : public PIndirectChannel
     );
   //@}
 
+	LONG_PTR GetErrorThreadId() const { return m_ErrorThreadId; }
+	void SetErrorThreadId(LONG_PTR val) { m_ErrorThreadId = val; }
+
   protected:
     PSoundChannel * GetSoundChannel() const { return dynamic_cast<PSoundChannel *>(readChannel); }
+	LONG_PTR m_ErrorThreadId;
 
     /**This is the direction that this sound channel is opened for use
        in.  Should the user attempt to used this opened class instance

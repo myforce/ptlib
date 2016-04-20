@@ -280,6 +280,7 @@ PString PSoundChannel::GetDefaultDevice(Directions dir)
 
 PSoundChannel::PSoundChannel()
   : activeDirection(Closed)
+  , m_ErrorThreadId(NULL)
 {
 }
 
@@ -297,6 +298,7 @@ PSoundChannel::PSoundChannel(const PString & device,
                              unsigned sampleRate,
                              unsigned bitsPerSample)
   : activeDirection(dir)
+  , m_ErrorThreadId(NULL)
 {
   Open(Params(dir, device, PString::Empty(), numChannels, sampleRate, bitsPerSample));
 }
