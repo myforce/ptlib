@@ -632,6 +632,12 @@ public:
     ostream & strm,
     bool crlf = true
   );
+  /**
+	Allow tracing to use offsets in the trace files
+  */
+  static long GetTimeOffset();
+
+  static void SetTimeOffSet(long nSeconds);
 
   /** Begin a trace output.
       If the trace stream output is used outside of the provided macros, it

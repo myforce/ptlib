@@ -741,6 +741,14 @@ int STDAPICALLTYPE PTimeIsDayName(const char * str, int day, int abbrev)
 };
 
 
+PTime PTime::OffsetTime(long nOffset)
+{
+	PTime toReturn;
+	PTimeInterval toAdd(0, nOffset);
+	toReturn += toAdd;
+	return toReturn;
+}
+
 void PTime::ReadFrom(istream & strm)
 {
   time_t now;

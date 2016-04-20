@@ -151,6 +151,7 @@ public:
   unsigned        m_lastRotate;
   ios::fmtflags   m_oldStreamFlags;
   std::streamsize m_oldPrecision;
+  long			  m_offset;
 
 
 #if defined(_WIN32)
@@ -212,6 +213,7 @@ PTHREAD_MUTEX_RECURSIVE_NP
     , m_lastRotate(0)
     , m_oldStreamFlags(ios::left)
     , m_oldPrecision(0)
+	, m_offset(0)
   {
     InitMutex();
 
@@ -349,11 +351,12 @@ PTHREAD_MUTEX_RECURSIVE_NP
       fn.Replace("%P", PString(PProcess::GetCurrentProcessID()));
 
       if ((m_options & RotateLogMask) != 0)
-        fn = fn.GetDirectory() +
+	  {
+		  fn = fn.GetDirectory() +
              fn.GetTitle() +
-             PTime().AsString(m_rolloverPattern, ((m_options&GMTTime) ? PTime::GMT : PTime::Local)) +
+             PTime::OffsetTime(m_offset).AsString(m_rolloverPattern, ((m_options&GMTTime) ? PTime::GMT : PTime::Local)) +
              fn.GetType();
-
+	  }
       PFile::OpenOptions options = PFile::Create;
       if ((m_options & AppendToFile) == 0)
         options |= PFile::Truncate;
@@ -397,7 +400,7 @@ PTHREAD_MUTEX_RECURSIVE_NP
       log << PProcess::GetOSClass() << ' ' << PProcess::GetOSName()
           << " (" << PProcess::GetOSVersion() << '-' << PProcess::GetOSHardware() << ")"
              " with PTLib (v" << PProcess::GetLibVersion() << ")"
-             " at " << PTime().AsString("yyyy/M/d h:mm:ss.uuu") << ","
+             " at " << PTime::OffsetTime(m_offset).AsString("yyyy/M/d h:mm:ss.uuu") << ","
              " level=" << m_thresholdLevel << ", to ";
       if ((m_options & RotateLogMask) == 0)
         log << '"' << m_filename;
@@ -440,6 +443,20 @@ void PTrace::SetStream(ostream * s)
 ostream * PTrace::GetStream()
 {
   return PTraceInfo::Instance().m_stream;
+}
+
+/*static*/ long PTrace::GetTimeOffset()
+{
+	 PTraceInfo & info = PTraceInfo::Instance();
+	 return info.m_offset;
+}
+
+/*static*/ void PTrace::SetTimeOffSet(long nSeconds)
+{
+	PTraceInfo & info = PTraceInfo::Instance();
+	long oldOffset = info.m_offset;
+	info.m_offset = nSeconds;
+	PTRACE_IF(2, oldOffset != nSeconds, "PTLib\tTrace offset set to " << nSeconds << " seconds");
 }
 
 
@@ -635,9 +652,9 @@ void PTrace::Initialise(unsigned level, const char * filename, unsigned options,
 }
 
 
-static unsigned GetRotateVal(unsigned options)
+unsigned GetRotateVal(long nOffset, unsigned options)
 {
-  PTime now;
+  PTime now = PTime::OffsetTime(nOffset);
   if (options & PTrace::RotateDaily)
     return now.GetDayOfYear();
   if (options & PTrace::RotateHourly) 
@@ -653,7 +670,7 @@ void PTraceInfo::InternalInitialise(unsigned level, const char * filename, const
   m_rolloverPattern = rolloverPattern;
   if (m_rolloverPattern.IsEmpty())
     m_rolloverPattern = DefaultRollOverPattern;
-  m_lastRotate = GetRotateVal(options);
+  m_lastRotate = GetRotateVal(m_offset, options);
   m_thresholdLevel = level;
   AdjustOptions(options, UINT_MAX);
   OpenTraceFile(filename, level > 0);
@@ -733,7 +750,7 @@ ostream & PTraceInfo::InternalBegin(bool topLevel, unsigned level, const char * 
     Lock();
 
     if (!m_filename.IsEmpty() && HasOption(RotateLogMask)) {
-      unsigned rotateVal = GetRotateVal(m_options);
+      unsigned rotateVal = GetRotateVal(m_offset, m_options);
       if (rotateVal != m_lastRotate) {
         m_lastRotate = rotateVal;
         OpenTraceFile(m_filename, true);
@@ -755,7 +772,7 @@ ostream & PTraceInfo::InternalBegin(bool topLevel, unsigned level, const char * 
 
   if (!HasOption(SystemLogStream)) {
     if (HasOption(DateAndTime)) {
-      PTime now;
+      PTime now = PTime::OffsetTime(m_offset);
       stream << now.AsString(PTime::LoggingFormat, HasOption(GMTTime) ? PTime::GMT : PTime::Local) << '\t';
     }
 
