@@ -280,7 +280,9 @@ extern int PParseEnum(const char * str, int begin, int end, char const * const *
 // Declare the debugging support
 
 #ifndef P_USE_ASSERTS
+#ifdef _DEBUG
 #define P_USE_ASSERTS 1
+#endif
 #endif
 
 #if !P_USE_ASSERTS
