@@ -34,6 +34,8 @@
 #include <ptlib.h>
 #include <ptlib/remconn.h>
 #include <ptlib/pprocess.h>
+#ifdef P_REMCONN
+
 
 
 #if P_REMCONN
@@ -539,5 +541,6 @@ PRemoteConnection::Status
 
 #endif // P_REMCONN
 
+#endif //P_REMCONN
 
 // End of File ////////////////////////////////////////////////////////////////
