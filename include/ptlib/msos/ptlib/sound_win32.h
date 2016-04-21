@@ -173,8 +173,8 @@ class PSoundChannelWin32: public PSoundChannel
     PBoolean Abort();
     PBoolean SetVolume(unsigned newVal);
     PBoolean GetVolume(unsigned &devVol);
-    PBoolean SetMute(bool mute);
-    PBoolean GetMute(bool & mute);
+    PBoolean SetMute(PBoolean mute);
+    PBoolean GetMute(PBoolean & mute);
 
   public:
     // Overrides from class PChannel

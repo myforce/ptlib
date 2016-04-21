@@ -1063,7 +1063,7 @@ class PURL_TelScheme : public PURLScheme
 {
     PCLASSINFO(PURL_TelScheme, PURLScheme);
   public:
-    virtual PBoolean Parse(const char * cstr, PURL & url) const
+    virtual bool Parse(const char * cstr, PURL & url) const
     {
       const PConstCaselessString str(cstr);
 

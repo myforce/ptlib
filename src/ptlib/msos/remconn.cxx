@@ -34,6 +34,8 @@
 #include <ptlib.h>
 #include <ptlib/remconn.h>
 
+#ifdef P_REMCONN
+
 #define SizeWin400_RAS_MaxEntryName 256
 #define SizeWin400_RAS_MaxPhoneNumber 128
 #define SizeWin400_RAS_MaxCallbackNumber SizeWin400_RAS_MaxPhoneNumber
@@ -576,5 +578,6 @@ PRemoteConnection::Status
   return GeneralFailure;
 }
 
+#endif //P_REMCONN
 
 // End of File ////////////////////////////////////////////////////////////////
