@@ -753,7 +753,7 @@ dnl see if using GNU glibc++, because then we have atomic integer operations
 
 dnl MSWIN_DISPLAY    atomic,Has std::atomic
 
-dnl MSWIN_DEFAULT atomic,Disabled
+dnl MSWIN_DEFAULT atomic,Enabled
 dnl MSWIN_DEFINE     atomic,P_STD_ATOMIC
 
 MY_COMPILE_IFELSE(
@@ -1795,7 +1795,7 @@ PTLIB_SIMPLE_OPTION([ssdp], [SSDP], [SSDP support], [HAS_HTTP])
 dnl ########################################################################
 dnl check for Cypher support
 dnl MSWIN_DISPLAY    cypher,Cypher support
-dnl MSWIN_DEFAULT cypher,Disabled
+dnl MSWIN_DEFAULT cypher,Enabled
 dnl MSWIN_DEFINE     cypher,P_CYPHER
 
 PTLIB_SIMPLE_OPTION([cypher], [CYPHER], [Cypher support])
@@ -1811,7 +1811,7 @@ PTLIB_SIMPLE_OPTION([vartype], [VARTYPE], [VarType support])
 dnl ########################################################################
 dnl check for GUID support
 dnl MSWIN_DISPLAY    guid,GUID support
-dnl MSWIN_DEFAULT guid,Disabled
+dnl MSWIN_DEFAULT guid,Enabled
 dnl MSWIN_DEFINE     guid,P_GUID
 
 PTLIB_SIMPLE_OPTION([guid], [GUID], [GUID support])
@@ -1835,7 +1835,7 @@ PTLIB_SIMPLE_OPTION([spooldir], [SPOOLDIR], [Spool directory support], [HAS_GUID
 dnl ########################################################################
 dnl check for system log support
 dnl MSWIN_DISPLAY    syslog,System log support
-dnl MSWIN_DEFAULT syslog,Disabled
+dnl MSWIN_DEFAULT syslog,Enabled
 dnl MSWIN_DEFINE     syslog,P_SYSTEMLOG
 
 PTLIB_SIMPLE_OPTION([syslog], [SYSTEMLOG], [System log support])
@@ -1851,7 +1851,7 @@ PTLIB_SIMPLE_OPTION([chanutils], [CHANNEL_UTILS], [Channel utilities support])
 dnl ########################################################################
 dnl check for timer support
 dnl MSWIN_DISPLAY    timers,Timers support
-dnl MSWIN_DEFAULT timers,Disabled
+dnl MSWIN_DEFAULT timers,Enabled
 dnl MSWIN_DEFINE     timers,P_TIMERS
 
 PTLIB_SIMPLE_OPTION([timers], [TIMERS], [Timers support])
@@ -2324,7 +2324,7 @@ dnl
 
 dnl MSWIN_DISPLAY pluginmgr,Plugin Manager Support
 
-dnl MSWIN_DEFAULT pluginmgr,Disabled
+dnl MSWIN_DEFAULT pluginmgr,Enabled
 dnl MSWIN_DEFINE  pluginmgr,P_PLUGINMGR
 
 PTLIB_SIMPLE_OPTION([pluginmgr], [PLUGINMGR], [Plugin Manager support])
