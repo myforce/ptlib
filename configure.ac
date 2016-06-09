@@ -1803,7 +1803,7 @@ PTLIB_SIMPLE_OPTION([cypher], [CYPHER], [Cypher support])
 dnl ########################################################################
 dnl check for VarType support
 dnl MSWIN_DISPLAY    vartype,VarType support
-dnl MSWIN_DEFAULT vartype,Disabled
+dnl MSWIN_DEFAULT vartype,Enabled
 dnl MSWIN_DEFINE     vartype,P_VARTYPE
 
 PTLIB_SIMPLE_OPTION([vartype], [VARTYPE], [VarType support])
