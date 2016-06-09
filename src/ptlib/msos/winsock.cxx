@@ -1125,7 +1125,7 @@ bool PIPSocket::SetQoS(const QoS & qos)
         PTRACE(3, "Cannot set QoS, no peer address yet.");
       } else {
         if (qos.m_type != BestEffortQoS || new_tos >= 0 || qos.m_transmit.m_maxBandwidth > 0) {
-          ok = QOSAddSocketToFlow(PWinSock::GetInstance().m_h QoS, os_handle, (PSOCKADDR)sockaddr_wrapper(peer),TrafficType[qos.m_type], QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId);
+          ok = QOSAddSocketToFlow(PWinSock::GetInstance().m_hQoS, os_handle, (PSOCKADDR)sockaddr_wrapper(peer),TrafficType[qos.m_type], QOS_NON_ADAPTIVE_FLOW, &m_qosFlowId);
           PTRACE_IF(1, !ok, "WinSock", "DEBUG TOS: SetQoS => Could not add socket to QoS flow. With errorcode: " << ::GetLastError());
         }
       }
