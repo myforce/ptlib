@@ -74,6 +74,8 @@ class PTime : public PObject
      */
     PTime() { SetCurrentTime(); }
 
+	static PTime OffsetTime(long nOffset);
+
     /**Create a time object instance.
        This initialises the time to the specified time.
      */

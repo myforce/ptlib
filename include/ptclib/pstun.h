@@ -374,10 +374,10 @@ class PSTUNUDPSocket : public PNATUDPSocket
     bool OpenSTUN(PSTUNClient & client);
     virtual void GetCandidateInfo(PNatCandidate & candidate);
 
-    bool BaseWriteTo(const void * buf, PINDEX len, const PIPSocketAddressAndPort & ap)
+    PBoolean BaseWriteTo(const void * buf, PINDEX len, const PIPSocketAddressAndPort & ap)
     { Slice slice((void *)buf, len); return PUDPSocket::InternalWriteTo(&slice, 1, ap); }
 
-    bool BaseReadFrom(void * buf, PINDEX len, PIPSocketAddressAndPort & ap)
+    PBoolean BaseReadFrom(void * buf, PINDEX len, PIPSocketAddressAndPort & ap)
     { Slice slice(buf, len); return PUDPSocket::InternalReadFrom(&slice, 1, ap); }
 
   protected:
@@ -592,7 +592,7 @@ class PSTUNClient : public PNatMethod, public PSTUN
        The socket pointers are set to NULL if the function fails and returns
        false.
       */
-    virtual bool CreateSocketPair(
+    virtual PBoolean CreateSocketPair(
       PUDPSocket * & socket1,
       PUDPSocket * & socket2,
       const PIPSocket::Address & binding = PIPSocket::GetDefaultIpAny(),
@@ -699,8 +699,8 @@ class PTURNUDPSocket : public PSTUNUDPSocket, public PSTUN
 
   protected:
     bool InternalGetLocalAddress(PIPSocketAddressAndPort & addr);
-    bool InternalWriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort);
-    bool InternalReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort);
+    PBoolean InternalWriteTo(const Slice * slices, size_t sliceCount, const PIPSocketAddressAndPort & ipAndPort);
+    PBoolean InternalReadFrom(Slice * slices, size_t sliceCount, PIPSocketAddressAndPort & ipAndPort);
     void InternalSetSendAddress(const PIPSocketAddressAndPort & addr);
     void InternalGetSendAddress(PIPSocketAddressAndPort & addr);
 
@@ -748,7 +748,7 @@ class PTURNClient : public PSTUNClient
       Component component = eComponent_Unknown
     );
 
-    bool CreateSocketPair(
+    PBoolean CreateSocketPair(
       PUDPSocket * & socket1,
       PUDPSocket * & socket2,
       const PIPSocket::Address & binding = PIPSocket::GetDefaultIpAny(),

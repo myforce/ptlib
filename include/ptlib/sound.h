@@ -552,8 +552,8 @@ class PSoundChannel : public PIndirectChannel
        @return
        true if there were no errors.
     */
-    virtual bool SetMute(
-      bool mute   ///< New mute state
+    virtual PBoolean SetMute(
+      PBoolean mute   ///< New mute state
     );
 
     /**Get the mute state of the play/read process.
@@ -561,8 +561,8 @@ class PSoundChannel : public PIndirectChannel
        @return
        true if there were no errors.
     */
-    virtual bool GetMute(
-      bool & mute   ///< Variable to receive mute state.
+    virtual PBoolean GetMute(
+      PBoolean & mute   ///< Variable to receive mute state.
     );
 
   //@}
@@ -743,8 +743,12 @@ class PSoundChannel : public PIndirectChannel
     );
   //@}
 
+	LONG_PTR GetErrorThreadId() const { return m_ErrorThreadId; }
+	void SetErrorThreadId(LONG_PTR val) { m_ErrorThreadId = val; }
+
   protected:
     PSoundChannel * GetSoundChannel() const { return dynamic_cast<PSoundChannel *>(readChannel); }
+	LONG_PTR m_ErrorThreadId;
 
     /**This is the direction that this sound channel is opened for use
        in.  Should the user attempt to used this opened class instance

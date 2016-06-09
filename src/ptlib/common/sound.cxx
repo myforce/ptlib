@@ -280,6 +280,7 @@ PString PSoundChannel::GetDefaultDevice(Directions dir)
 
 PSoundChannel::PSoundChannel()
   : activeDirection(Closed)
+  , m_ErrorThreadId(NULL)
 {
 }
 
@@ -297,6 +298,7 @@ PSoundChannel::PSoundChannel(const PString & device,
                              unsigned sampleRate,
                              unsigned bitsPerSample)
   : activeDirection(dir)
+  , m_ErrorThreadId(NULL)
 {
   Open(Params(dir, device, PString::Empty(), numChannels, sampleRate, bitsPerSample));
 }
@@ -380,14 +382,14 @@ PBoolean PSoundChannel::SetVolume(unsigned volume)
 }
 
 
-PBoolean PSoundChannel::GetMute(bool & mute)
+PBoolean PSoundChannel::GetMute(PBoolean & mute)
 {
   PReadWaitAndSignal mutex(channelPointerMutex);
   return readChannel != NULL && GetSoundChannel()->GetMute(mute);
 }
 
 
-PBoolean PSoundChannel::SetMute(bool mute)
+PBoolean PSoundChannel::SetMute(PBoolean mute)
 {
   PReadWaitAndSignal mutex(channelPointerMutex);
   return readChannel != NULL && GetSoundChannel()->SetMute(mute);

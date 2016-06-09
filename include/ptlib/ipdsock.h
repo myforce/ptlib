@@ -122,13 +122,13 @@ class PIPDatagramSocket : public PIPSocket
   
     // Normally, one would expect these to be protected, but they are just so darn
     // useful that it's just easier if they are public
-    virtual bool InternalReadFrom(
+    virtual PBoolean InternalReadFrom(
       Slice * slices, 
       size_t sliceCount, 
       PIPSocketAddressAndPort & ipAndPort
     );
 
-    virtual bool InternalWriteTo(
+    virtual PBoolean InternalWriteTo(
       const Slice * slices, 
       size_t sliceCount, 
       const PIPSocketAddressAndPort & ipAndPort

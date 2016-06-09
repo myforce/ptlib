@@ -1075,8 +1075,12 @@ int PSoundChannelWin32::WaitEvent(ErrorGroup group)
       if (CheckNotOpen())
         return false;
 
-      if (m_reopened) {
-        PTRACE(2, "WinSnd\tCould not recover from stuck device");
+      if (m_reopened) 
+	  {
+	  	if (m_ErrorThreadId != NULL)
+		  PostThreadMessage(m_ErrorThreadId, (WM_USER + 1000), 0, 0);
+
+		PTRACE(2, "WinSnd\tCould not recover from stuck device");
         return SetErrorValues(Timeout, ETIMEDOUT, group);
       }
 
@@ -1540,7 +1544,7 @@ PBoolean PSoundChannelWin32::GetVolume(unsigned & oldVolume)
 }
 
 
-bool PSoundChannelWin32::SetMute(bool newMute)
+PBoolean PSoundChannelWin32::SetMute(PBoolean newMute)
 {
   if (CheckNotOpen())
     false;
@@ -1567,7 +1571,7 @@ bool PSoundChannelWin32::SetMute(bool newMute)
 }
 
 
-bool PSoundChannelWin32::GetMute(bool & oldMute)
+PBoolean PSoundChannelWin32::GetMute(PBoolean & oldMute)
 {
   if (CheckNotOpen())
     return false;
@@ -1594,4 +1598,3 @@ bool PSoundChannelWin32::GetMute(bool & oldMute)
 
 
 // End of File ///////////////////////////////////////////////////////////////
-

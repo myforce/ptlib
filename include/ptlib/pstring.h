@@ -591,7 +591,7 @@ class PString : public PCharArray
        @return
        true if new memory block successfully re-allocated.
      */
-    bool MakeMinimumSize(
+    PBoolean MakeMinimumSize(
       PINDEX newLength = 0  /// New length for string, if zero strlen is used
     );
 

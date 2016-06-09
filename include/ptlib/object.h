@@ -280,7 +280,9 @@ extern int PParseEnum(const char * str, int begin, int end, char const * const *
 // Declare the debugging support
 
 #ifndef P_USE_ASSERTS
+#ifdef _DEBUG
 #define P_USE_ASSERTS 1
+#endif
 #endif
 
 #if !P_USE_ASSERTS
@@ -625,6 +627,13 @@ public:
   /** Get the stream being used for trace output.
   */
   static ostream * GetStream();
+
+  /**
+	Allow tracing to use offsets in the trace files
+  */
+  static long GetTimeOffset();
+
+  static void SetTimeOffSet(long nSeconds);
 
   /** Output trace parameters (level, output, options etc) to stream.
     */

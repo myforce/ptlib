@@ -299,7 +299,7 @@ class PNatMethod  : public PObject
        The socket pointers are set to NULL if the function fails and returns
        false.
       */
-    virtual bool CreateSocketPair(
+    virtual PBoolean CreateSocketPair(
       PUDPSocket * & socket1,
       PUDPSocket * & socket2,
       const PIPSocket::Address & binding = PIPSocket::GetDefaultIpAny(),
