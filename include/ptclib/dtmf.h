@@ -55,6 +55,7 @@ class PDTMFDecoder : public PObject
     int sampleCount, tonesDetected, inputAmplitude;
 };
 
+#endif //P_DTMF
 
 /** This class can be used to generate PCM data for tones (such as telephone
     calling tones and DTMF) at a sample rate of 8khz.
@@ -190,7 +191,7 @@ class PTones : public PShortArray
     PINDEX   m_addPosition;
 };
 
-
+#if P_DTMF
 /**
   * this class can be used to generate PCM data for DTMF tones
   * at a sample rate of 8khz
