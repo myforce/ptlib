@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Android">
@@ -1046,7 +1046,7 @@ bison -o ../common/getdate_tab.c ../common/getdate.y
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Configuring Build Options</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Configuring Build Options</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cd $(ProjectDir)..\..\..
-..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../Lib/$(Platform)/" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">cd $(ProjectDir)..\..\..
 ..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../Lib/$(Platform)/" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
@@ -1058,7 +1058,7 @@ bison -o ../common/getdate_tab.c ../common/getdate.y
       <Message Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">Configuring Build Options</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">Configuring Build Options</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">cd $(ProjectDir)..\..\..
-..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../Lib/$(Platform)/" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">cd $(ProjectDir)..\..\..
 ..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../Lib/$(Platform)/" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
@@ -1070,7 +1070,7 @@ bison -o ../common/getdate_tab.c ../common/getdate.y
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Configuring Build Options</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Configuring Build Options</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">cd $(ProjectDir)..\..\..
-..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../Lib/$(Platform)/" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
+..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">cd $(ProjectDir)..\..\..
 ..\configure "-Dac_top_build_prefix=$(ProjectDir)../../../Lib/$(Platform)/" --no-search --exclude-env=VSNET2010_PTLIB_CONFIGURE_EXCLUDE_DIRS %PTLIB_CONFIGURE_OPTIONS% %PWLIB_CONFIGURE_OPTIONS%
@@ -1100,7 +1100,6 @@ bison -o ../common/getdate_tab.c ../common/getdate.y
     <None Include="..\..\..\include\ptlib\osutil.inl" />
     <None Include="..\..\..\include\ptlib\msos\ptlib\ptlib.inl" />
     <None Include="..\..\..\configure.ac" />
-
     <None Include="..\..\..\include\ptlib\unix\ptlib\ptlib.inl" />
   </ItemGroup>
   <ItemGroup>
