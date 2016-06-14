@@ -236,7 +236,7 @@ static int sine(int angle, int freq)
   }
 }
 
-
+#endif //P_DTMF
 ////////////////////////////////////////////////////////////////////////
 
     
@@ -633,7 +633,7 @@ void PTones::AddSample(int sample, unsigned volume)
 
 
 ////////////////////////////////////////////////////////////////////////
-
+#if P_DTMF
 PDTMFEncoder::PDTMFEncoder(const char * dtmf, unsigned milliseconds) :
    PTones() 
 {
