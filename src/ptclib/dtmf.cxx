@@ -145,8 +145,8 @@ PString PDTMFDecoder::Decode(const short * sampleData, PINDEX numSamples, unsign
   return keyString;
 }
 
+#endif //P_DTMF
 ////////////////////////////////////////////////////////////////////////////////////////////
-
 static int sine(int angle, int freq)
 {
   static int const sinArray[2000] = {
@@ -236,9 +236,7 @@ static int sine(int angle, int freq)
   }
 }
 
-#endif //P_DTMF
 ////////////////////////////////////////////////////////////////////////
-
     
 PTones::PTones(unsigned volume, unsigned sampleRate)
   : m_sampleRate(sampleRate)
