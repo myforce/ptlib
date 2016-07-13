@@ -77,7 +77,7 @@ class PNotifierFunctionTemplate : public PSmartObject
      */
     virtual void Call(
       PObject & notifier,  ///< Object that is making the notification.
-      ParamType extra       ///< Extra information that may be passed to function.
+      const ParamType& extra       ///< Extra information that may be passed to function.
     ) const = 0;
 
     virtual void * GetTarget() const { return this->m_target; }
@@ -129,7 +129,7 @@ class PNotifierTemplate : public PSmartPointer
      */
     virtual void operator()(
       PObject & notifier,  ///< Object that is making the notification.
-      ParamType extra       ///< Extra information that may be passed to function.
+      const ParamType &extra       ///< Extra information that may be passed to function.
     ) const {
       FunctionPtr ptr = dynamic_cast<FunctionPtr>(GetObject());
       if (PAssertNULL(ptr) != NULL)
@@ -153,7 +153,7 @@ typedef PNotifierTemplate<P_INT_PTR> PNotifier;
   class func##_PNotifier : public BaseClass { \
     public: \
       func##_PNotifier(notifiee * target) : BaseClass(target, target) { } \
-      virtual void Call(PObject & note, ParamType extra) const \
+      virtual void Call(PObject & note, const ParamType& extra) const \
 
 #define PDECLARE_NOTIFIER_COMMON2(notifierType, notifierArg, notifiee, func, ParamType, ParamArg, BaseClass) \
         { notifiee * target = reinterpret_cast<notifiee *>(this->GetTarget()); \
