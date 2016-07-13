@@ -42,7 +42,7 @@
     <ProjectName>PTLib Static</ProjectName>
     <ProjectGuid>{D11E1C9D-406C-4D7C-8F37-913C0BFD9E0D}</ProjectGuid>
     <RootNamespace>PTLib Static</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>6.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'" Label="Configuration">
@@ -118,16 +118,16 @@
     <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)intermediate</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)intermediate\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)intermediate</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)intermediate\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(OutDir)intermediate</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(OutDir)intermediate\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">$(OutDir)intermediate\</IntDir>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)..\..\..\lib\$(Platform)\include;$(ProjectDir)..\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\..\..\lib\$(Platform)\include;$(ProjectDir)..\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">$(ProjectDir)..\..\..\lib\$(Platform)\include;$(ProjectDir)..\..\..\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
@@ -141,14 +141,14 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='No Trace|Win32'">ptlibsn</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='No Trace|x64'">ptlib64sn</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">$(OutDir)intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">libptlibsd</TargetName>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Android'">..\..\..\lib\$(Platform)\include;..\..\..\include;$(AndroidIncludeDir);$(AndroidStlIncludeDir)</IncludePath>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Android'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Android'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='No Trace|Android'">$(OutDir)intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='No Trace|Android'">libptlibsn</TargetName>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Android'">..\..\..\Lib2015\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Android'">$(OutDir)intermediate</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Android'">$(OutDir)intermediate\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Android'">libptlibs</TargetName>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='No Trace|Android'">..\..\..\lib\$(Platform)\include;..\..\..\include;$(AndroidIncludeDir);$(AndroidStlIncludeDir)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Android'">..\..\..\lib\$(Platform)\include;..\..\..\include;$(AndroidIncludeDir);$(AndroidStlIncludeDir)</IncludePath>
