@@ -1211,7 +1211,7 @@ class PHTTPServer : public PHTTP
       PHTTPConnectionInfo & connectInfo
     );
 
-    typedef PNotifierTemplate<PHTTPConnectionInfo> WebSocketNotifier;
+    typedef PNotifierTemplate<PHTTPConnectionInfo&> WebSocketNotifier;
 
     /** Set the handler for WebSocket sub-protocol.
         A NULL notifier may be set which indiates that the protocol is
