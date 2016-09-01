@@ -410,6 +410,8 @@ void PCLI::Context::OnCompletedLine()
   if (CheckInternalCommand(line, m_cli.GetCommentCommand(), true))
     return;
 
+  clear();
+
   if (CheckInternalCommand(line, m_cli.GetRepeatCommand())) {
     if (m_commandHistory.IsEmpty()) {
       *this << m_cli.GetNoHistoryError() << endl;
@@ -466,6 +468,8 @@ void PCLI::Context::OnCompletedLine()
     line = m_commandHistory[cmdNum-1];
   }
 
+  m_commandHistory += line;
+
   if (CheckInternalCommand(line, m_cli.GetHelpCommand()))
     m_cli.ShowHelp(*this, line);
   else {
@@ -474,8 +478,6 @@ void PCLI::Context::OnCompletedLine()
     m_cli.OnReceivedLine(args);
     m_state = e_CommandEntry;
   }
-
-  m_commandHistory += line;
 }
 
 
@@ -554,7 +556,7 @@ PCLI::PCLI(const char * prompt)
                  "\n"
                  "Commands available are:")
   , m_repeatCommand("!!")
-  , m_historyCommand("!")
+  , m_historyCommand("!\nhistory")
   , m_noHistoryError("No command history")
   , m_commandUsagePrefix("Usage: ")
   , m_commandErrorPrefix(": error: ")
@@ -601,6 +603,8 @@ bool PCLI::Start(bool runInBackground)
 
 void PCLI::Stop()
 {
+  SetPrompt(PString::Empty());
+
   m_contextMutex.Wait();
   for (ContextList_t::iterator iter = m_contextList.begin(); iter != m_contextList.end(); ++iter)
     (*iter)->Stop();

@@ -681,7 +681,7 @@ void PTrace::SetOptions(unsigned options)
 {
   PTraceInfo & info = PTraceInfo::Instance();
   if (info.AdjustOptions(options, 0)) {
-    PTRACE(2, "Trace options set to " << info.m_options);
+    PTRACE(2, "Trace options 0x" << hex << options << " added, now 0x" << info.m_options);
   }
 }
 
@@ -690,7 +690,7 @@ void PTrace::ClearOptions(unsigned options)
 {
   PTraceInfo & info = PTraceInfo::Instance();
   if (info.AdjustOptions(0, options)) {
-    PTRACE(2, "Trace options set to " << info.m_options);
+    PTRACE(2, "Trace options 0x" << hex << options << " removed, now 0x" << info.m_options);
   }
 }
 
@@ -2361,7 +2361,7 @@ void PProcess::PostShutdown()
 PProcess & PProcess::Current()
 {
   if (PProcessInstance == NULL) {
-    PAssertFunc("Catastrophic failure, PProcess::Current() = NULL!!");
+    PAssertAlways("Catastrophic failure, PProcess::Current() = NULL!!");
     PBreakToDebugger();
     _exit(1);
   }
@@ -2546,17 +2546,20 @@ void PProcess::InternalThreadEnded(PThread * thread)
   if (PAssertNULL(thread) == NULL)
     return;
 
-  if (thread->IsAutoDelete()) {
-    PTRACE(5, thread, "Queuing auto-delete of thread " << *thread);
-    thread->SetNoAutoDelete();
-    m_autoDeleteThreads.Enqueue(thread);
-  }
+  // Do the log before mutex and thread being removed from m_activeThreads
+  PTRACE_IF(5, thread->IsAutoDelete(), thread, "Queuing auto-delete of thread " << *thread);
 
   PWaitAndSignal mutex(m_threadMutex);
 
   ThreadMap::iterator it = m_activeThreads.find(thread->GetThreadId());
   if (it != m_activeThreads.end() && it->second == thread)
     m_activeThreads.erase(it); // Not already gone, or re-used the thread ID for new thread.
+
+  // Must be last thing to avoid race condition
+  if (thread->IsAutoDelete()) {
+    thread->SetNoAutoDelete();
+    m_autoDeleteThreads.Enqueue(thread);
+  }
 }
 
 
@@ -2857,13 +2860,13 @@ bool PThread::WaitAndDelete(PThread * & threadToDelete, const PTimeInterval & ma
   }
 
   ostringstream strm;
-  strm << "Thread \"" << *thread << "\""
+  strm << "Thread \"" << *thread << "\" failed to terminate"
 #if PTRACING
-          "\n";
+          " at stack location:";
   PTrace::WalkStack(strm, thread->GetThreadId());
-  strm << "  "
+  strm << "\n   "
 #endif
-          " failed to terminate in " << maxWait << " seconds";
+          " in " << maxWait << " seconds";
   PAssertAlways(strm.str().c_str());
 
   delete thread;
