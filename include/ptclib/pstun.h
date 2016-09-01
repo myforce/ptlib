@@ -689,6 +689,7 @@ class PTURNUDPSocket : public PSTUNUDPSocket, public PSTUN
     );
     ~PTURNUDPSocket();
 
+	virtual const char * GetNatName() const;
     virtual PBoolean Close();
 
 
