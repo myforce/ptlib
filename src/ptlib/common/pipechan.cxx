@@ -40,6 +40,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // PPipeChannel
 
+#ifdef P_PIPECHAN
 static PBoolean SplitArgs(const PString & cmdline,
                       PString & progName,
                       PStringArray & arguments)
@@ -164,5 +165,5 @@ PBoolean PPipeChannel::Open(const PString & subProgram,
   return PlatformOpen(subProgram, arguments, mode, searchPath, stderrSeparate, &environment);
 }
 
-
+#endif // P_PIPECHAN
 // End Of File ///////////////////////////////////////////////////////////////

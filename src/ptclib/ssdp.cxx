@@ -37,6 +37,8 @@
 #include <ptclib/ssdp.h>
 #include <ptlib/udpsock.h>
 
+#ifdef P_SSDP
+
 
 static const PIPSocket::Address ssdpMulticast(239,255,255,250);
 static const WORD ssdpPort = 1900;
@@ -142,6 +144,6 @@ bool PSSDP::GetNotify(PMIMEInfo & mime, const PString & urnRegex)
 
   return true;
 }
-
+#endif // P_SSDP
 
 // End Of File ///////////////////////////////////////////////////////////////

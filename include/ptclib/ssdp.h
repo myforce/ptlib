@@ -40,7 +40,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // PSSDP
-
+#ifdef P_SSDP
 /** Simple Service Discovery Protocol.
  */
 class PSSDP : public PHTTP
@@ -94,6 +94,7 @@ class PSSDP : public PHTTP
 
 
 #endif // PTLIB_SSDP_H
+#endif // p_SSDP
 
 
 // End Of File ///////////////////////////////////////////////////////////////
