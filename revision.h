@@ -28,7 +28,7 @@
 #ifndef _PTLib_REVISION_H
 #define _PTLib_REVISION_H
 
-#define GIT_COMMIT 0
+#define GIT_COMMIT ""
 
 #endif  // _PTLib_REVISION_H
 
