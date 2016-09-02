@@ -1101,6 +1101,7 @@ bison -o ../common/getdate_tab.c ../common/getdate.y
     <None Include="..\..\..\include\ptlib\msos\ptlib\ptlib.inl" />
     <None Include="..\..\..\configure.ac" />
     <None Include="..\..\..\include\ptlib\unix\ptlib\ptlib.inl" />
+    <None Include="..\..\..\tools\get_revision.sh" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\ptclib\pjson.h" />
