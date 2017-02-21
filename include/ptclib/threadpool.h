@@ -575,7 +575,7 @@ class PSafeWorkArg1 : public PSafeWork
   PCLASSINFO_ALIGNED(PSafeWorkArg1, PSafeWork, 16);
 
   public:
-    typedef FuncRet (PtrClass::*Function)(Arg1Type arg1);
+    typedef FuncRet (PtrClass::*Function)(const Arg1Type & arg1);
 
   protected:
     P_ALIGN_FIELD(Function,m_function,16);
@@ -584,7 +584,7 @@ class PSafeWorkArg1 : public PSafeWork
   public:
     PSafeWorkArg1(
       PtrClass * ptr,
-      Arg1Type arg1,
+      const Arg1Type & arg1,
       Function function
     ) : PSafeWork(ptr)
       , m_function(function)
@@ -610,7 +610,7 @@ class PSafeWorkArg2 : public PSafeWork
   PCLASSINFO_ALIGNED(PSafeWorkArg2, PSafeWork, 16);
 
   public:
-    typedef FuncRet (PtrClass::*Function)(const Arg1Type &arg1, const Arg2Type &arg2);
+    typedef FuncRet (PtrClass::*Function)(const Arg1Type & arg1, const Arg2Type & arg2);
 
   protected:
     P_ALIGN_FIELD(Function,m_function,16);
@@ -620,8 +620,8 @@ class PSafeWorkArg2 : public PSafeWork
   public:
     PSafeWorkArg2(
       PtrClass * ptr,
-      const Arg1Type &arg1,
-      const Arg2Type &arg2,
+      const Arg1Type & arg1,
+      const Arg2Type & arg2,
       Function function
     ) : PSafeWork(ptr)
       , m_function(function)
@@ -649,7 +649,7 @@ class PSafeWorkArg3 : public PSafeWork
   PCLASSINFO_ALIGNED(PSafeWorkArg3, PSafeWork, 16);
 
   public:
-    typedef FuncRet (PtrClass::*Function)(Arg1Type arg1, Arg2Type arg2, Arg3Type arg3);
+    typedef FuncRet (PtrClass::*Function)(const Arg1Type & arg1, const Arg2Type & arg2, const Arg3Type & arg3);
 
   protected:
     P_ALIGN_FIELD(Function,m_function,16);
@@ -660,9 +660,9 @@ class PSafeWorkArg3 : public PSafeWork
   public:
     PSafeWorkArg3(
       PtrClass * ptr,
-      Arg1Type arg1,
-      Arg2Type arg2,
-      Arg2Type arg3,
+      const Arg1Type & arg1,
+      const Arg2Type & arg2,
+      const Arg2Type & arg3,
       Function function
     ) : PSafeWork(ptr)
       , m_function(function)
