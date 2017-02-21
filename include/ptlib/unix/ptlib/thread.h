@@ -69,12 +69,20 @@
 #endif
     mutable pthread_mutex_t   PX_suspendMutex;
     int               PX_suspendCount;
-    enum {
+    enum PX_states {
       PX_firstResume,
       PX_starting,
       PX_running,
+      PX_finishing,
       PX_finished
-    } PX_state;
+    };
+#if P_STD_ATOMIC
+    atomic<PX_states> PX_state;
+#else
+    atomic<int> PX_state;
+#endif
+
+    std::auto_ptr<PSyncPoint> PX_synchroniseThreadFinish;
 
 #ifndef P_HAS_SEMAPHORES
     PSemaphore      * PX_waitingSemaphore;

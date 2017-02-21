@@ -267,6 +267,11 @@ PThread::PThread(PINDEX stackSize,
 
 void PThread::InternalDestroy()
 {
+  /* If manual delete, wait for thread to really end before
+     proceeding with destruction */
+  if (PX_synchroniseThreadFinish.get() != NULL)
+    PX_synchroniseThreadFinish->Wait();
+
   // close I/O unblock pipes
   ::close(unblockPipe[0]);
   ::close(unblockPipe[1]);
@@ -313,11 +318,23 @@ void PThread::PX_ThreadBegin()
 
   if (PX_priority != NormalPriority)
     SetPriority(PX_priority);
+
+  /* If manual delete thread, there is a race on the thread actually ending
+     and the PThread object being deleted. This flag is used to synchronise
+     those actions. */
+  if (!IsAutoDelete())
+    PX_synchroniseThreadFinish.reset(new PSyncPoint());
 }
 
 
 void PThread::PX_ThreadEnd()
 {
+  /* Bizarely, this can get called by pthread_cleanup_push() when a thread
+     is started! Seems to be a load and/or race on use of thread ID's inside
+     the system library. Anyway, need to make sure we are really ending. */
+  if (PX_state.exchange(PX_finishing) != PX_running)
+    return;
+
 #if defined(P_LINUX)
   PX_endTick = PTimer::Tick();
 #endif
@@ -325,9 +342,26 @@ void PThread::PX_ThreadEnd()
   PProcess & process = PProcess::Current();
   process.OnThreadEnded(*this);
 
-  PX_state = PX_finished;
+  /* Need to check this before the process.InternalThreadEnded() as an auto
+     delete thread would be deleted in that function. */
+  bool doThreadFinishedSignal = PX_synchroniseThreadFinish.get() != NULL;
+
+  /* The thread changed from manual to auto delete somewhere, so we need to
+     do the signal now, due to the thread being deleted in InternalThreadEnded() */
+  if (doThreadFinishedSignal && IsAutoDelete()) {
+    doThreadFinishedSignal = false; // Don't do it after
+    PX_synchroniseThreadFinish->Signal();
+  }
+
+  /* If auto delete, "this" may have be deleted any nanosecond after
+     this function, as it is asynchronously done by the housekeeping thread. */
   process.InternalThreadEnded(this);
-  // "this" may have been deleted at this point
+
+  /* We know the thread is not auto delete and the destructor is either
+     not run yet, or is waiting on this signal, so "this" is still safe
+     to use. */
+  if (doThreadFinishedSignal)
+    PX_synchroniseThreadFinish->Signal();
 }
 
 
@@ -349,10 +383,10 @@ void * PThread::PX_ThreadMain(void * arg)
   thread->Main();
 
 #if P_USE_THREAD_CANCEL
-  pthread_cleanup_pop(1); // execute the cleanup routine
-#else
-  PX_ThreadEnd(arg);
+  pthread_cleanup_pop(0);
 #endif
+
+  thread->PX_ThreadEnd();
 
   return NULL;
 }

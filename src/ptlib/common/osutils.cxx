@@ -216,7 +216,10 @@ PTHREAD_MUTEX_RECURSIVE_NP
 	, m_offset(0)
   {
     InitMutex();
+  }
 
+  void InitialiseFromEnvironment()
+  {
     const char * levelEnv = getenv("PTLIB_TRACE_LEVEL");
     if (levelEnv == NULL) {
       levelEnv = getenv("PWLIB_TRACE_LEVEL");
@@ -308,7 +311,7 @@ PTHREAD_MUTEX_RECURSIVE_NP
 
     AdjustOptions(0, SystemLogStream);
 
-    if (m_filename == "stderr")
+    if (m_filename == "stderr" || !PProcess::IsInitialised())
       SetStream(&cerr);
     else if (m_filename == "stdout")
       SetStream(&cout);
@@ -345,18 +348,21 @@ PTHREAD_MUTEX_RECURSIVE_NP
     else {
       PDirectory dir(m_filename);
       if (dir.Exists())
-        m_filename = dir + "opal_%P.log";
+        m_filename = dir + "%N_%P.log";
 
       PFilePath fn(m_filename);
-      fn.Replace("%P", PString(PProcess::GetCurrentProcessID()));
 
+      PString rollover;
       if ((m_options & RotateLogMask) != 0)
-	  {
-		  fn = fn.GetDirectory() +
-             fn.GetTitle() +
-             PTime::OffsetTime(m_offset).AsString(m_rolloverPattern, ((m_options&GMTTime) ? PTime::GMT : PTime::Local)) +
-             fn.GetType();
-	  }
+        rollover = PTime::OffsetTime(m_offset).AsString(m_rolloverPattern, ((m_options&GMTTime) ? PTime::GMT : PTime::Local));
+
+      fn.Replace("%D", rollover, true);
+      fn.Replace("%N", PProcess::Current().GetName(), true);
+      fn.Replace("%P", PString(PProcess::GetCurrentProcessID()), true);
+
+      if (!rollover.empty() && fn.Find(rollover) == P_MAX_INDEX)
+        fn = fn.GetDirectory() + fn.GetTitle() + rollover + fn.GetType();
+
       PFile::OpenOptions options = PFile::Create;
       if ((m_options & AppendToFile) == 0)
         options |= PFile::Truncate;
@@ -383,6 +389,7 @@ PTHREAD_MUTEX_RECURSIVE_NP
         fputs(msgstrm.str().c_str(), stderr);
 #endif
         delete traceOutput;
+        SetStream(&cerr);
       }
     }
 
@@ -751,11 +758,9 @@ ostream & PTraceInfo::InternalBegin(bool topLevel, unsigned level, const char * 
 
     if (!m_filename.IsEmpty() && HasOption(RotateLogMask)) {
       unsigned rotateVal = GetRotateVal(m_offset, m_options);
-      if (rotateVal != m_lastRotate) {
+      if (rotateVal != m_lastRotate || GetStream() == &cerr) {
         m_lastRotate = rotateVal;
         OpenTraceFile(m_filename, true);
-        if (m_stream == NULL)
-          SetStream(&cerr);
         if (threadInfo == NULL)
           streamPtr = m_stream;
       }
@@ -1184,6 +1189,7 @@ PTimer::PTimer(const PTimer & timer)
   : PTimeInterval(timer.GetResetTime())
   , m_handle(s_handleGenerator.Create())
   , m_running(false)
+  , m_callbackMutex("PTimerCallback")
 {
   InternalStart(true, PTimeInterval::InternalGet());
 }
@@ -2138,6 +2144,10 @@ PProcess::PProcess(const char * manuf, const char * name,
   PAssert(PProcessInstance == NULL, "Only one instance of PProcess allowed");
   PProcessInstance = this;
 
+#if PTRACING
+  PTraceInfo::Instance().InitialiseFromEnvironment();
+#endif
+
   /* Try to get the real image path for this process using platform dependent
      code, if this fails, then use the value urigivally set via argv[0] */
 #if defined(_WIN32)
@@ -2555,11 +2565,18 @@ void PProcess::InternalThreadEnded(PThread * thread)
   if (it != m_activeThreads.end() && it->second == thread)
     m_activeThreads.erase(it); // Not already gone, or re-used the thread ID for new thread.
 
-  // Must be last thing to avoid race condition
+  // All of this is carefully constructed to avoid race condition deleting "thread"
   if (thread->IsAutoDelete()) {
     thread->SetNoAutoDelete();
+#ifdef P_PTHREADS
+    thread->PX_state = PThread::PX_finished;
+#endif
     m_autoDeleteThreads.Enqueue(thread);
   }
+#ifdef P_PTHREADS
+  else
+    thread->PX_state = PThread::PX_finished;
+#endif
 }
 
 
